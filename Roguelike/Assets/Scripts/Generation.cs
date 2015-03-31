@@ -10,9 +10,9 @@ public class Generation : MonoBehaviour
               mapHeight = 25;
 
     public GameManager theManager;
-    GameObject theCamera;
-    GameObject thePlayer;
-    GameObject tilePrefab;
+    GameObject theCamera,
+               thePlayer,
+               tilePrefab;
     GameObject[,] tiles = new GameObject[mapWidth, mapHeight];
     Tile[,] tileScript = new Tile[mapWidth, mapHeight];
     List<Tile> possibleFeatureLoctions = new List<Tile>();
@@ -43,8 +43,6 @@ public class Generation : MonoBehaviour
 	void Start()
 	{
         GenerateMap();
-
-        //this.transform.position = new Vector3(0 - (mapWidth / 2), 0 - (mapHeight / 2), 0);
 	}
 
     public void GenerateTheRooms(int numberOfRooms)

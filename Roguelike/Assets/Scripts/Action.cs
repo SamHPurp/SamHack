@@ -5,7 +5,6 @@ public static class Action
 {
     public static void OpenDoor(Transform thisLocation, Generation mapGenerator, Vector3 direction)
     {
-        Debug.Log("Testing");
         Tile potentialLocation = mapGenerator.GetTile((int)thisLocation.position.x + (int)direction.x, (int)thisLocation.position.y + (int)direction.y);
         if(IsItADoor(thisLocation.position + direction, mapGenerator, potentialLocation))
         {
@@ -26,7 +25,6 @@ public static class Action
     {
         if (tile.tileType == Tile.TileType.ClosedDoor)
         {
-            Debug.Log("Definitely a door!");
             return true;
         }
         else if (tile.tileType == Tile.TileType.OpenDoor)
@@ -34,5 +32,10 @@ public static class Action
             Debug.Log("Door already open");
         }
         return false;
+    }
+
+    public static void Display(int display)
+    {
+        Debug.Log(display);
     }
 }

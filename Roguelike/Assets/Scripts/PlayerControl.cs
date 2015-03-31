@@ -5,6 +5,7 @@ public class PlayerControl : Actor
 {
     public Generation mapGenerator;
     public CameraControl theMainCamera;
+    int seed = 10;
     PlayerControl instance;
 
     void Awake()
@@ -18,6 +19,11 @@ public class PlayerControl : Actor
 	
 	void Update()
 	{
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            PsuedoRandom.ShowRandomNumbers(seed);
+        }
+
         if (canMove && !paralysed)
         {
             if (Input.GetKey(KeyCode.O))
