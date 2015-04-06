@@ -3,8 +3,8 @@ using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    GameObject playerPrefab;
-    GameObject cameraPrefab;
+    public GameObject playerPrefab;
+    public GameObject cameraPrefab;
     Generation theGenerator;
     GameObject thePlayer;
     GameObject theCamera;
@@ -28,9 +28,9 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Semicolon))
         {
-            theGenerator.GenerateTheRooms(30);
-            theGenerator.SpawnPlayer(playerPrefab, cameraPrefab);
-            theCamera.GetComponent<CameraControl>().RegisterPlayer(thePlayer);
+            //theGenerator.ConstructMap(playerPrefab, cameraPrefab);
+
+            theGenerator.BuildAllMaps(playerPrefab, cameraPrefab);
         }
     }
 
@@ -38,5 +38,10 @@ public class GameManager : MonoBehaviour
     {
         thePlayer = player;
         theCamera = theBuiltCamera;
+    }
+
+    public void GameOver()
+    {
+        Debug.Log("Game Over!");
     }
 }

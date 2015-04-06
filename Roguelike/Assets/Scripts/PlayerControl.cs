@@ -5,7 +5,6 @@ public class PlayerControl : Actor
 {
     public Generation mapGenerator;
     public CameraControl theMainCamera;
-    int seed = 10;
     PlayerControl instance;
 
     void Awake()
@@ -19,14 +18,15 @@ public class PlayerControl : Actor
 	
 	void Update()
 	{
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            PsuedoRandom.ShowRandomNumbers(seed);
-        }
 
-        if (canMove && !paralysed)
+        if (!paralysed)
         {
-            if (Input.GetKey(KeyCode.O))
+            if (Input.GetKeyDown(KeyCode.Equals))
+            {
+                Action.UseStairs(location, mapGenerator, mapGenerator.theManager);
+            }
+
+            if (Input.GetKey(KeyCode.O)) // Open Doors
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Keypad4)) // left
                     Action.OpenDoor(location, mapGenerator, -Vector3.right);
@@ -41,7 +41,7 @@ public class PlayerControl : Actor
                     Action.OpenDoor(location, mapGenerator, -Vector3.up);
             }
 
-            if (Input.GetKey(KeyCode.C))
+            if (Input.GetKey(KeyCode.C)) // Close Doors
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Keypad4)) // left
                     Action.CloseDoor(location, mapGenerator, -Vector3.right);
@@ -56,31 +56,34 @@ public class PlayerControl : Actor
                     Action.CloseDoor(location, mapGenerator, -Vector3.up);
             }
 
-            if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Keypad4)) // left
-                Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right);
-
-            if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Keypad8)) // up
-                Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.up);
-
-            if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Keypad6)) // right
-                Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right);
-
-            if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Keypad2)) // down
-                Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.up);
-
-            if (canMoveDiagonally)
+            if (canMove)
             {
-                if (Input.GetKeyDown(KeyCode.Keypad3)) // down right
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right, -Vector3.up);
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Keypad4)) // left
+                    Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right);
 
-                if (Input.GetKeyDown(KeyCode.Keypad1)) // down left
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right, -Vector3.up);
+                if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Keypad8)) // up
+                    Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.up);
 
-                if (Input.GetKeyDown(KeyCode.Keypad7)) // up left
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right, Vector3.up);
+                if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Keypad6)) // right
+                    Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right);
 
-                if (Input.GetKeyDown(KeyCode.Keypad9)) // up right
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right, Vector3.up);
+                if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Keypad2)) // down
+                    Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.up);
+
+                if (canMoveDiagonally)
+                {
+                    if (Input.GetKeyDown(KeyCode.Keypad3)) // down right
+                        Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right, -Vector3.up);
+
+                    if (Input.GetKeyDown(KeyCode.Keypad1)) // down left
+                        Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right, -Vector3.up);
+
+                    if (Input.GetKeyDown(KeyCode.Keypad7)) // up left
+                        Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right, Vector3.up);
+
+                    if (Input.GetKeyDown(KeyCode.Keypad9)) // up right
+                        Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right, Vector3.up);
+                }
             }
         }
 	}

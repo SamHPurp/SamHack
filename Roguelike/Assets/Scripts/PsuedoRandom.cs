@@ -3,18 +3,14 @@ using System.IO;
 
 public static class PsuedoRandom
 {
-    public static void GenerateSeed()
+    public static Random SetRandom()
     {
-
+        Random rnd = new Random();
+        return rnd;
     }
 
-	public static void ShowRandomNumbers(int seed)
+    public static int GenerateRandomNumber(int seed, int min, int max)
     {
-        Random spork = new Random(seed);
-
-        for (int x = 0; x < 10; x++)
-        {
-            Action.Display(spork.Next());
-        }
+        return new Random(seed).Next(min, max);
     }
 }

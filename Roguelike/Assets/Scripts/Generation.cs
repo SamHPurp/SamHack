@@ -1,29 +1,32 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 
 public class Generation : MonoBehaviour
 {
-    //TODO: Refactor the rectangles into Rect Structs
+    //TODO: Refactor the rooms into Rect Structs
 
-    const int mapWidth = 30,
-              mapHeight = 25;
+    public const int mapWidth = 30,
+                     mapHeight = 25;
 
     public GameManager theManager;
     GameObject theCamera,
                thePlayer,
                tilePrefab;
     GameObject[,] tiles = new GameObject[mapWidth, mapHeight];
-    Tile[,] tileScript = new Tile[mapWidth, mapHeight];
+    public Tile[,] tileScript = new Tile[mapWidth, mapHeight];
+    public List<Level> levels = new List<Level>();
     List<Tile> possibleFeatureLoctions = new List<Tile>();
     List<Tile> openFloorSpace = new List<Tile>();
 
-    Tile possibleDoor,
-         stairsUp,
-         stairsDown;
+    Tile possibleDoor;
 
     Vector2[] directions = new Vector2[4];
     int buildDirection;
+    public int currentLevel = 0,
+               seed;
+    System.Random rnd;
 	
     void Awake()
     {
@@ -38,26 +41,42 @@ public class Generation : MonoBehaviour
         directions[1] = new Vector2(0, -1); // look down
         directions[2] = new Vector2(-1, 0); // look left
         directions[3] = new Vector2(0, 1); // look up
+
+        rnd = new System.Random();
+        seed = rnd.Next();
     }
 	
 	void Start()
 	{
-        GenerateMap();
+        GenerateField();
 	}
 
-    public void GenerateTheRooms(int numberOfRooms)
+    public void BuildAllMaps(GameObject playerPrefab, GameObject cameraPrefab)
     {
-        WipeMap();
-        CreateFirstRoom();
-        for (int i = 0; i < numberOfRooms; i++)
+        for(int i = 0; i < 30; i++)
         {
-            CreateNewFeature();
+            levels.Add(new Level());
+            Debug.Log(levels.Count);
+            GenerateTheRooms(30, i);
+            levels[i].SaveMap(tileScript);
         }
-
-        GenerateExitsAndEntrance();
+        BuildPlayer(playerPrefab, cameraPrefab);
+        DisplayMap(0, true);
     }
 
-    private void GenerateMap()
+    public void DisplayMap(int loadLevel, bool down)
+    {
+        for (int x = 0; x < mapWidth; x++)
+        {
+            for (int y = 0; y < mapHeight; y++)
+            {
+                tileScript[x, y].UpdateTileType(levels[loadLevel].tileContents[x, y]);
+            }
+        }
+        SpawnPlayer(down);
+    }
+
+    private void GenerateField()
     {
         for(int x = 0; x < mapWidth; x++)
         {
@@ -67,22 +86,47 @@ public class Generation : MonoBehaviour
                 tiles[x, y].transform.parent = this.transform;
                 tiles[x, y].name = "Tile(" + x + "," + y + ")";
                 tileScript[x, y] = tiles[x, y].GetComponent<Tile>();
-                tileScript[x, y].tileLocation = new Vector2(x,y);
+                tileScript[x, y].tileLocation = new Vector2(x, y);
             }
         }
 
         WipeMap();
     }
-
-    public void SpawnPlayer(GameObject playerPrefab, GameObject cameraPrefab)
+    
+    private void BuildPlayer(GameObject playerPrefab, GameObject cameraPrefab)
     {
-        Destroy(thePlayer);
-        Destroy(theCamera);
-        thePlayer = (GameObject)Instantiate(playerPrefab,new Vector2(stairsUp.tileLocation.x,stairsUp.tileLocation.y),Quaternion.identity);
+        thePlayer = (GameObject)Instantiate(playerPrefab, new Vector2(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y), Quaternion.identity);
         thePlayer.name = "Player";
-        theCamera = (GameObject)Instantiate(cameraPrefab, new Vector3(stairsUp.tileLocation.x, stairsUp.tileLocation.y, -10), Quaternion.identity);
+        theCamera = (GameObject)Instantiate(cameraPrefab, new Vector3(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y, -10), Quaternion.identity);
         theCamera.name = "Main Camera";
         theManager.RegisterPlayer(thePlayer, theCamera);
+        theCamera.GetComponent<CameraControl>().RegisterPlayer(thePlayer);
+    }
+
+    public void SpawnPlayer(bool down)
+    {
+        if (down)
+        {
+            thePlayer.transform.position = new Vector2(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y);
+            theCamera.transform.position = new Vector3(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y, -10);
+        }
+        else
+        {
+            thePlayer.transform.position = new Vector2(levels[currentLevel].stairsDown.tileLocation.x, levels[currentLevel].stairsDown.tileLocation.y);
+            theCamera.transform.position = new Vector3(levels[currentLevel].stairsDown.tileLocation.x, levels[currentLevel].stairsDown.tileLocation.y, -10);
+        }
+    }
+
+    public void GenerateTheRooms(int numberOfRooms, int buildThisLevel)
+    {
+        WipeMap();
+        CreateFirstRoom(currentLevel);
+        for (int i = 0; i < numberOfRooms; i++)
+        {
+            CreateNewFeature();
+        }
+
+        GenerateExitsAndEntrance(buildThisLevel);
     }
 
     private void WipeMap()
@@ -92,30 +136,33 @@ public class Generation : MonoBehaviour
         FillRect(0, 0, mapWidth, mapHeight, Tile.TileType.SolidRock);
     }
 
-    private void GenerateExitsAndEntrance()
+    private void GenerateExitsAndEntrance(int levelNumber)
     {
         bool stairsBuilt = false;
 
         while(stairsBuilt == false)
         {
+            Level lvl = levels[levelNumber];
             List<Tile> potentialExitsAndEntrances = new List<Tile>(openFloorSpace);
-            stairsUp = openFloorSpace[Random.Range(0, openFloorSpace.Count)];
+            lvl.stairsUp = openFloorSpace[lvl.rnd.Next(0, openFloorSpace.Count)];
 
             for (int i = 0; i < potentialExitsAndEntrances.Count; i++)
             {
-                stairsDown = openFloorSpace[Random.Range(0, openFloorSpace.Count)];
-                if (stairsDown.tileLocation.x > stairsUp.tileLocation.x + 5 || stairsDown.tileLocation.x < stairsUp.tileLocation.x - 5)
+                lvl.stairsDown = openFloorSpace[UnityEngine.Random.Range(0, openFloorSpace.Count)];
+                if (lvl.stairsDown.tileLocation.x > lvl.stairsUp.tileLocation.x + 5
+                    || lvl.stairsDown.tileLocation.x < lvl.stairsUp.tileLocation.x - 5)
                 {
-                    if (stairsDown.tileLocation.y > stairsUp.tileLocation.y + 5 || stairsDown.tileLocation.y < stairsUp.tileLocation.y - 5)
+                    if (lvl.stairsDown.tileLocation.y > lvl.stairsUp.tileLocation.y + 5
+                        || lvl.stairsDown.tileLocation.y < lvl.stairsUp.tileLocation.y - 5)
                     {
-                        stairsUp.UpdateTileType(Tile.TileType.Stairs);
-                        stairsDown.UpdateTileType(Tile.TileType.Stairs);
+                        lvl.stairsUp.UpdateTileType(Tile.TileType.UpStairs);
+                        lvl.stairsDown.UpdateTileType(Tile.TileType.DownStairs);
                         stairsBuilt = true;
                         break;
                     }
                     else
                     {
-                        potentialExitsAndEntrances.Remove(stairsDown);
+                        potentialExitsAndEntrances.Remove(lvl.stairsDown);
                     }
                 }
             }
@@ -144,13 +191,18 @@ public class Generation : MonoBehaviour
         }
     }
 
-    private void CreateFirstRoom()
+    private void CreateFirstRoom(int levelNumber)
     {
-        int roomWidth  = Random.Range(4, 8),
-            roomHeight = Random.Range(3, 6),
-            startingX = Random.Range(0, mapWidth - roomWidth),
-            startingY  = Random.Range(0, mapHeight - roomHeight);
-        ConstructRoom(startingX, startingY, roomWidth, roomHeight, Tile.TileType.Floor);
+        Level theLevel = levels[levelNumber];
+        theLevel.width = theLevel.rnd.Next(4, 8);
+        theLevel.height = theLevel.rnd.Next(4, 8);
+        theLevel.startingX = theLevel.rnd.Next(0, mapWidth - theLevel.width);
+        theLevel.startingY = theLevel.rnd.Next(0, mapHeight - theLevel.height);
+        theLevel.rooms.Add(new Rect(theLevel.startingX, theLevel.startingY, theLevel.width, theLevel.height));
+
+        ConstructRoom(levels[levelNumber].startingX, levels[levelNumber].startingY, levels[levelNumber].width, levels[levelNumber].height, Tile.TileType.Floor);
+
+        Debug.Log("Built first room " + ( currentLevel) + "/" + levels.Count);
     }
 
     private void ConstructRoom(int startingX, int startingY, int roomWidth, int roomHeight, Tile.TileType theTileType)
@@ -162,12 +214,12 @@ public class Generation : MonoBehaviour
         }
     }
 
-    public void CreateNewFeature() //note overflows
+    public void CreateNewFeature() // Overflows
     {
         possibleDoor = BuildDirection(SelectRandomSpot());
         if (possibleDoor != null)
         {
-            if(Random.Range(0,2) == 0)
+            if (UnityEngine.Random.Range(0, 2) == 0)
             {
                 possibleDoor.UpdateTileType(Tile.TileType.ClosedDoor);
             }
@@ -185,12 +237,12 @@ public class Generation : MonoBehaviour
         }
     }
 
-    public void CreateNewFeature(Tile theCurrentTile) //note overflows
+    public void CreateNewFeature(Tile theCurrentTile) // Overflows
     {
         possibleDoor = BuildDirection(theCurrentTile);
         if (possibleDoor != null)
         {
-            if (Random.Range(0, 2) == 0)
+            if (UnityEngine.Random.Range(0, 2) == 0)
             {
                 possibleDoor.UpdateTileType(Tile.TileType.ClosedDoor);
             }
@@ -212,13 +264,13 @@ public class Generation : MonoBehaviour
     {
         //TODO: Switch statement
 
-        int roomWidth = Random.Range(4, 8),
-            roomHeight = Random.Range(3, 6),
+        int roomWidth = UnityEngine.Random.Range(4, 8),
+            roomHeight = UnityEngine.Random.Range(3, 6),
             tileX = (int)door.transform.localPosition.x,
             tileY = (int)door.transform.localPosition.y,
-            widthModifer = Random.Range(0,roomWidth),
-            heightModifer = Random.Range(0,roomHeight),
-            featureNumber = Random.Range(0,2);
+            widthModifer = UnityEngine.Random.Range(0, roomWidth),
+            heightModifer = UnityEngine.Random.Range(0, roomHeight),
+            featureNumber = UnityEngine.Random.Range(0, 2);
 
         switch(featureNumber)
         {
@@ -329,7 +381,7 @@ public class Generation : MonoBehaviour
 
     private Tile SelectRandomSpot()
     {
-        Tile randomedTile = possibleFeatureLoctions[Random.Range(0, possibleFeatureLoctions.Count)];
+        Tile randomedTile = possibleFeatureLoctions[UnityEngine.Random.Range(0, possibleFeatureLoctions.Count)];
 
         return randomedTile;
     }

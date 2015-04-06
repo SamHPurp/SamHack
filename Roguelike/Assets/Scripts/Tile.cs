@@ -17,7 +17,7 @@ public class Tile : MonoBehaviour
         theGenerator = FindObjectOfType<Generation>();
     }
 
-    public enum TileType { Floor, Corridor, Wall, SolidRock, OpenDoor, ClosedDoor, Stairs };
+    public enum TileType { Floor, Corridor, Wall, SolidRock, OpenDoor, ClosedDoor, UpStairs, DownStairs };
     public TileType tileType;
 
     public void CreateFeature(Tile theTile)
@@ -67,9 +67,15 @@ public class Tile : MonoBehaviour
                     walkable = false;
                     break;
                 }
-            case TileType.Stairs:
+            case TileType.UpStairs:
                 {
                     thisRenderer.material.color = Color.yellow;
+                    walkable = true;
+                    break;
+                }
+            case TileType.DownStairs:
+                {
+                    thisRenderer.material.color = Color.white;
                     walkable = true;
                     break;
                 }
@@ -80,5 +86,4 @@ public class Tile : MonoBehaviour
                 }
         }
     }
-
 }
