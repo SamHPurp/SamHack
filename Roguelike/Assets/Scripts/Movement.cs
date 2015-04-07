@@ -3,30 +3,37 @@ using System.Collections;
 
 public static class Movement
 {
-    public static void Move(Transform thisLocation, Generation mapGenerator, CameraControl theMainCamera, PlayerControl player, Vector3 direction) // couple overflows
+    private static Generation mapGenerator;
+
+    public static void RegisterGenerator(Generation me)
     {
-        if (CanWeMoveThisDirection(thisLocation.position + direction, mapGenerator))
+        mapGenerator = me;
+    }
+
+    public static void Move(Transform thisLocation, Vector3 direction, Vector3 direction2)
+    {
+        Vector3 newLocation = direction + direction2;
+        if (CanWeMoveThisDirection(thisLocation.position + newLocation))
         {
-            thisLocation.position += direction;
-            theMainCamera.UpdateLocation((int)player.transform.position.x, (int)player.transform.position.y);
+            mapGenerator.GetTile((int)thisLocation.position.x, (int)thisLocation.position.y).occupied = false;
+            mapGenerator.GetTile((int)(thisLocation.position.x + newLocation.x), (int)(thisLocation.position.y + newLocation.y)).occupied = true;
+            thisLocation.position += newLocation;
         }
     }
 
-    public static void Move(Transform thisLocation, Generation mapGenerator, CameraControl theMainCamera, PlayerControl player, Vector3 direction, Vector3 direction2) // couple overflows
+    static bool CanWeMoveThisDirection(Vector3 newLocation)
     {
-        if (CanWeMoveThisDirection(thisLocation.position + direction + direction2, mapGenerator))
+        if (newLocation.x < 0 || newLocation.y < 0 || newLocation.x > Generation.mapWidth || newLocation.y > Generation.mapHeight)
         {
-            thisLocation.position += direction + direction2;
-            theMainCamera.UpdateLocation((int)player.transform.position.x, (int)player.transform.position.y);
+            return false;
         }
-    }
-
-    static bool CanWeMoveThisDirection(Vector3 newLocation, Generation mapGenerator)
-    {
-        Tile potentialLocation = mapGenerator.GetTile((int)newLocation.x, (int)newLocation.y);
-        if (potentialLocation.walkable && !potentialLocation.occupied)
+        else
         {
-            return true;
+            Tile potentialLocation = mapGenerator.GetTile((int)newLocation.x, (int)newLocation.y);
+            if (potentialLocation.walkable && !potentialLocation.occupied)
+            {
+                return true;
+            }
         }
         return false;
     }

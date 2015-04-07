@@ -1,70 +1,70 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <DirectedGraph Layout="ForceDirected" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
   <Nodes>
-    <Node Id="(@1 Type=ActorStats)" Category="CodeSchema_Class" Bounds="215.191618831826,36.8182458377169,95.26,26" CodeSchemaProperty_IsPublic="True" CommonLabel="ActorStats" Icon="Microsoft.VisualStudio.Class.Public" Label="ActorStats" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///E:/Projects/Roguelike/Assets/Scripts/ActorStats.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" />
-    <Node Id="(@1 Type=Generation)" Category="CodeSchema_Class" Bounds="563.125658660889,379.960243189279,99.6811167602541,25.9997999954223" CodeSchemaProperty_IsPublic="True" CommonLabel="Generation" Icon="Microsoft.VisualStudio.Class.Public" Label="Generation" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///e:/projects/roguelike/assets/scripts/generation.cs StartLineNumber=4 StartCharacterOffset=0 EndLineNumber=4 EndCharacterOffset=0)" />
-    <Node Id="(@1 Type=Movement)" Category="CodeSchema_Class" Bounds="606.602820363767,84.0204850080982,98.3,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsFinal="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Movement" Icon="Microsoft.VisualStudio.Class.Public" Label="Movement" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///E:/Projects/Roguelike/Assets/Scripts/Movement.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" UseManualLocation="True" />
-    <Node Id="(@1 Type=PlayerControl)" Category="CodeSchema_Class" Bounds="258.930948893229,165.778842231446,112.416666666667,26" CodeSchemaProperty_IsPublic="True" CommonLabel="PlayerControl" Icon="Microsoft.VisualStudio.Class.Public" Label="PlayerControl" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///e:/projects/roguelike/assets/scripts/playercontrol.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" />
-    <Node Id="Actions" Bounds="322.088990071615,273.779042231446,183.51000406901,197.88042878418" Group="Expanded" UseManualLocation="True" />
-    <Node Id="Armour" Bounds="80.9999992879232,368.18587577856,60.2433333333333,25.96" Label="Armour" />
-    <Node Id="Closed/Doors" Bounds="692.8067578125,379.960245726053,51.74,25.96" Label="Doors" />
-    <Node Id="Consumables" Bounds="180.873334452311,424.145958786372,90.9066666666668,25.96" Label="Consumables" />
-    <Node Id="Equipping" Bounds="342.088991902669,313.779142231446,73.7033333333334,25.96" Label="Equipping" />
-    <Node Id="Flying" Bounds="559.89312906901,263.99994318928,51.3366666666666,25.96" Label="Flying" />
-    <Node Id="Inventory" Bounds="81.0000017293294,424.14598930395,69.8733333333333,25.96" Label="Inventory" />
-    <Node Id="Items" Bounds="60.9999992879232,328.18577577856,230.780001831055,141.920313525391" Group="Expanded" UseManualLocation="True" />
-    <Node Id="Lava" Bounds="732.943698075952,208.039843189279,50,25.96" Label="Lava" />
-    <Node Id="MapGeneration" Bounds="543.125658365885,339.96014318928,261.926651204427,197.920199995422" Group="Expanded" Label="Map Generation" UseManualLocation="True" />
-    <Node Id="Menu/Options" Bounds="90.2380713364261,252.22557577856,97.2966666666666,25.96" Label="Menu/Options" />
-    <Node Id="MetaGame" Bounds="70.2380713364261,156.26537577856,137.296666666667,141.9203" Group="Expanded" UseManualLocation="True" />
-    <Node Id="Monsters" Bounds="380.682346598307,-6.181557768554,120.966666666667,85.9602" Group="Expanded" UseManualLocation="True" />
-    <Node Id="Movement" Bounds="586.602820363767,44.0203850080982,138.3,86.0002" Group="Expanded" Label="Movement" UseManualLocation="True" />
-    <Node Id="Opening/ClosingDoors" Bounds="342.088994140625,425.699371015626,143.51,25.9600000000002" Label="Opening/Closing doors" />
-    <Node Id="Pathfinding" Bounds="400.682346598307,33.818542231446,80.9666666666667,25.96" Label="Pathfinding" />
-    <Node Id="PersistantLevels" Bounds="563.125679117838,491.920243184702,103.786666666667,25.96" Label="Persistant levels" />
-    <Node Id="Player" Bounds="238.930948893229,125.778742231446,152.416666666667,86.0002" Group="Expanded" UseManualLocation="True" />
-    <Node Id="RoundRooms" Bounds="563.125658365885,435.960143184702,94.8066666666666,25.96" Label="Round Rooms" />
-    <Node Id="Save/Load" Bounds="90.2380748878876,196.26547577856,75.0335598933334,25.96" Label="Save/Load" />
-    <Node Id="SpecialRooms" Bounds="687.932309570313,435.960143184702,97.1199999999999,25.96" Label="Special Rooms" />
-    <Node Id="Stats" Bounds="195.191618831826,-3.18185416228313,135.26,86.0002" Group="Expanded" Label="Stats" />
-    <Node Id="Swimming" Category="Comment" Bounds="559.893142049746,208.039936475324,75.3507398262891,25.9600000001758" Label="Swimming" />
-    <Node Id="TileTypes" Bounds="712.770364742619,168.039743189279,92.1800000000001,141.9203" Group="Expanded" Label="Tile Types" />
-    <Node Id="Traversal" Bounds="539.89312906901,168.039836475324,115.350752807025,141.920206713955" Group="Expanded" UseManualLocation="True" />
-    <Node Id="UsingConsumables" Bounds="342.088990071615,369.739242231446,124.293333333333,25.96" Label="Using Consumables" />
-    <Node Id="Water" Bounds="732.943698075952,263.99994318928,51.8333333333333,25.96" Label="Water" />
-    <Node Id="Weapons" Bounds="171.243334406406,368.18587577856,69.49099232,25.96" Label="Weapons" />
+    <Node Id="(@1 Type=ActorStats)" Category="CodeSchema_Class" Bounds="212.244481201172,153.061969949361,95.26,26" CodeSchemaProperty_IsPublic="True" CommonLabel="ActorStats" Icon="Microsoft.VisualStudio.Class.Public" Label="ActorStats" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///E:/Projects/Roguelike/Assets/Scripts/ActorStats.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" UseManualLocation="True" />
+    <Node Id="(@1 Type=Movement)" Category="CodeSchema_Class" Bounds="413.54612269764,62.6048904535376,98.3000000000001,26" CodeSchemaProperty_IsAbstract="True" CodeSchemaProperty_IsFinal="True" CodeSchemaProperty_IsPublic="True" CommonLabel="Movement" Icon="Microsoft.VisualStudio.Class.Public" Label="Movement" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///E:/Projects/Roguelike/Assets/Scripts/Movement.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" UseManualLocation="True" />
+    <Node Id="(@1 Type=PlayerControl)" Category="CodeSchema_Class" Bounds="199.853190104167,251.062183572408,112.416666666667,26" CodeSchemaProperty_IsPublic="True" CommonLabel="PlayerControl" Icon="Microsoft.VisualStudio.Class.Public" Label="PlayerControl" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///e:/projects/roguelike/assets/scripts/playercontrol.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" UseManualLocation="True" />
+    <Node Id="@2" Category="CodeSchema_Class" Bounds="159.853190104167,-2.89891679384738,192.416666666667,319.961300366256" CodeSchemaProperty_IsPublic="True" CommonLabel="Actor" Group="Expanded" Icon="Microsoft.VisualStudio.Class.Public" Label="Actor" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///e:/github/samhack/roguelike/assets/scripts/actor.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" UseManualLocation="True" />
+    <Node Id="@3" Category="CodeSchema_Class" Bounds="644.119944431536,319.610808586541,179.925834377057,141.92064446207" CodeSchemaProperty_IsPublic="True" CommonLabel="Generation" Group="Expanded" Icon="Microsoft.VisualStudio.Class.Public" Label="Generation" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///e:/projects/roguelike/assets/scripts/generation.cs StartLineNumber=4 StartCharacterOffset=0 EndLineNumber=4 EndCharacterOffset=0)" UseManualLocation="True" />
+    <Node Id="@4" Category="CodeSchema_Class" Bounds="198.640418532194,37.1011832061526,121.018235201237,85.9606867432086" CodeSchemaProperty_IsPublic="True" CommonLabel="Monster" Group="Expanded" Icon="Microsoft.VisualStudio.Class.Public" Label="Monster" Language="{B5E9BD34-6D3E-4B5D-925E-8A43B79820B4}" SourceLocation="(Assembly=file:///E:/GitHub/SamHack/Roguelike/Assets/Scripts/Monster.cs StartLineNumber=3 StartCharacterOffset=0 EndLineNumber=3 EndCharacterOffset=0)" UseManualLocation="True" />
+    <Node Id="Actions" Bounds="389.269851022708,310.525371663415,183.51,197.88042878418" Group="Expanded" UseManualLocation="True" />
+    <Node Id="Armour" Bounds="171.916022542318,387.062583572408,60.2433333333333,25.96" Label="Armour" />
+    <Node Id="Closed/Doors" Category="Category2" Bounds="770.5665234375,491.531566162109,51.74,25.96" Label="Doors" UseManualLocation="True" />
+    <Node Id="Consumables" Bounds="171.91599802653,498.982888650533,90.9066666666668,25.96" Label="Consumables" />
+    <Node Id="Equipping" Bounds="409.26987930233,406.485571663415,73.7033333333334,25.9600000000002" Label="Equipping" />
+    <Node Id="Flying" Bounds="444.641957697276,234.565234099932,51.3366666666666,25.9600000000001" Label="Flying" />
+    <Node Id="Inventory" Bounds="171.915979207357,443.022788650533,69.8733333333333,25.96" Label="Inventory" />
+    <Node Id="Items" Bounds="151.915979207357,347.062483572408,199.734393661628,197.880505078125" Group="Expanded" UseManualLocation="True" />
+    <Node Id="Lava" Bounds="638.2314453125,139.653209908737,50,25.96" Label="Lava" />
+    <Node Id="MapGeneration" Bounds="616.779851022708,279.610708586541,227.265927785886,262.645483942756" Group="Expanded" Label="Map Generation" UseManualLocation="True" />
+    <Node Id="Menu/Options" Bounds="760.238080240885,200.985250922581,97.2966666666666,25.96" Label="Menu/Options" />
+    <Node Id="MetaGame" Bounds="740.238072348255,105.025067914768,137.296666929902,141.9203" Group="Expanded" UseManualLocation="True" />
+    <Node Id="Movement" Bounds="393.54612269764,22.6047904535375,138.3,86.0002" Group="Expanded" Label="Movement" UseManualLocation="True" />
+    <Node Id="Opening/ClosingDoors" Category="Category2" Bounds="409.269851022708,350.525471663415,143.51,25.9600000000003" Label="Opening/Closing doors" />
+    <Node Id="Pathfinding" Bounds="218.640418532194,77.1012832061526,81.0182352012371,25.9604867432086" Label="Pathfinding" />
+    <Node Id="PersistantLevels" Category="Category2" Bounds="636.779853922526,496.296092529297,103.786666666667,25.96" Label="Persistant levels" UseManualLocation="True" />
+    <Node Id="Player" Bounds="179.853190104167,211.062083572408,152.416666666667,86.0002" Group="Expanded" Label="Player" UseManualLocation="True" />
+    <Node Id="RoundRooms" Bounds="664.119944431536,359.610901363125,94.8465979533335,25.96032618" Label="Round Rooms" />
+    <Node Id="Save/Load" Bounds="760.238072348255,145.025167914769,75.0335598933334,25.96" Label="Save/Load" />
+    <Node Id="SpecialRooms" Bounds="706.925778808594,415.571345825195,97.1199999999999,25.96" Label="Special Rooms" UseManualLocation="True" />
+    <Node Id="Swimming" Category="Comment" Bounds="444.641970678012,178.605151092031,75.3507398262891,25.9600000001758" Label="Swimming" />
+    <Node Id="TileTypes" Bounds="618.058040771484,99.6531099087367,92.1800000000001,141.9203" Group="Expanded" Label="Tile Types" />
+    <Node Id="Traversal" Bounds="424.641957697276,138.604990453537,115.350752807025,141.920300000176" Group="Expanded" UseManualLocation="True" />
+    <Node Id="Turn-basedQueueSystem" Category="Comment" Bounds="571.16034383138,43.6930099087367,158.863333333333,25.96" Label="Turn-based Queue system" UseManualLocation="True">
+      <Category Ref="Category6" />
+    </Node>
+    <Node Id="UsingConsumables" Bounds="409.269862212487,462.445700447595,124.293333333333,25.96" Label="Using Consumables" />
+    <Node Id="Water" Bounds="638.231374104818,195.613309908737,51.8333333333333,25.96" Label="Water" />
+    <Node Id="Weapons" Bounds="262.159380548984,387.062583572408,69.49099232,25.96" Label="Weapons" />
   </Nodes>
   <Links>
+    <Link Source="@2" Target="(@1 Type=ActorStats)" Category="Contains" />
+    <Link Source="@2" Target="@4" Category="Contains" />
+    <Link Source="@2" Target="Player" Category="Contains" />
+    <Link Source="@3" Target="RoundRooms" Category="Contains" />
+    <Link Source="@3" Target="SpecialRooms" Category="Contains" />
+    <Link Source="@4" Target="Pathfinding" Category="Contains" />
     <Link Source="Actions" Target="Equipping" Category="Contains" />
-    <Link Source="Actions" Target="Items" Bounds="300.724777224301,382.930833540674,21.3642128473141,2.37766114028756" />
+    <Link Source="Actions" Target="Items" Bounds="360.538192909325,424.089742869973,28.7316581133825,4.57932836128589" />
     <Link Source="Actions" Target="Opening/ClosingDoors" Category="Contains" />
     <Link Source="Actions" Target="UsingConsumables" Category="Contains" />
     <Link Source="Items" Target="Armour" Category="Contains" />
     <Link Source="Items" Target="Consumables" Category="Contains" />
     <Link Source="Items" Target="Inventory" Category="Contains" />
     <Link Source="Items" Target="Weapons" Category="Contains" />
-    <Link Source="MapGeneration" Target="(@1 Type=Generation)" Category="Contains" />
+    <Link Source="MapGeneration" Target="@3" Category="Contains" />
     <Link Source="MapGeneration" Target="Closed/Doors" Category="Contains" />
     <Link Source="MapGeneration" Target="PersistantLevels" Category="Contains" />
-    <Link Source="MapGeneration" Target="RoundRooms" Category="Contains" />
-    <Link Source="MapGeneration" Target="SpecialRooms" Category="Contains" />
-    <Link Source="MapGeneration" Target="TileTypes" Bounds="716.050616780799,318.245924503573,9.20738834464964,21.7142186857064" />
+    <Link Source="MapGeneration" Target="TileTypes" Bounds="686.106602588095,250.249625237151,8.09588887025973,29.3610833493905" />
     <Link Source="MetaGame" Target="Menu/Options" Category="Contains" />
     <Link Source="MetaGame" Target="Save/Load" Category="Contains" />
-    <Link Source="Monsters" Target="Actions" Bounds="422.620764148084,79.778642231446,15.0491835330616,185.030021414772" />
-    <Link Source="Monsters" Target="Movement" Bounds="501.649013264974,50.954052666465,76.1906082390269,17.8316387430916" />
-    <Link Source="Monsters" Target="Pathfinding" Category="Contains" />
-    <Link Source="Monsters" Target="Stats" Bounds="339.450329007757,37.8226399146525,41.2320175905504,0.698136351971513" />
-    <Link Source="Monsters" Target="Traversal" Bounds="474.41079673988,79.778642231446,63.0590615106592,81.5242967942466" />
     <Link Source="Movement" Target="(@1 Type=Movement)" Category="Contains" />
-    <Link Source="Opening/ClosingDoors" Target="Closed/Doors" Bounds="423.723366183568,404.633667446329,315.103987996912,95.2468683048366" />
+    <Link Source="Opening/ClosingDoors" Target="Closed/Doors" Bounds="503.127613835808,376.485471663415,249.445416861434,146.488542551901" />
     <Link Source="Player" Target="(@1 Type=PlayerControl)" Category="Contains" />
-    <Link Source="Player" Target="Actions" Bounds="335.950813908223,211.778942231446,26.0864869178694,53.8990384405753" />
-    <Link Source="Player" Target="Movement" Bounds="391.347615559896,105.719366552566,186.503783855911,44.7669903768047" />
-    <Link Source="Player" Target="Stats" Bounds="283.649573322821,91.1581807379903,14.0451186905295,34.6205614934557" />
-    <Link Source="Player" Target="Traversal" Bounds="391.347615559896,187.726714379712,139.811428023331,34.7616716857639" />
-    <Link Source="Stats" Target="(@1 Type=ActorStats)" Category="Contains" />
-    <Link Source="Swimming" Target="Water" Bounds="567.852005655332,222.289416632923,125.984196330345,5.57633939024527E-11" />
+    <Link Source="Player" Target="Actions" Bounds="319.282189902822,287.919452526856,62.7927606580761,47.1874089269778" />
+    <Link Source="Player" Target="Movement" Bounds="310.174253723332,114.602413291185,97.6986457137817,87.3168392356708" />
+    <Link Source="Player" Target="Traversal" Bounds="338.269856770833,220.249265970601,77.4858607735304,12.4375738672329" />
+    <Link Source="Swimming" Target="Water" Bounds="519.992722208066,194.621945037996,122.36625792237,9.86328772122798" />
     <Link Source="TileTypes" Target="Lava" Category="Contains" />
     <Link Source="TileTypes" Target="Water" Category="Contains" />
     <Link Source="Traversal" Target="Flying" Category="Contains" />
@@ -72,12 +72,15 @@
     <Link Source="Traversal" Target="TileTypes" Bounds="138.317295724912,-208.639441803145,166.605105979949,65.5651623302183" />
   </Links>
   <Categories>
+    <Category Id="Category2" Label="Category 2" Background="#FF339933" IsTag="True" />
+    <Category Id="Category6" Label="Category 6" Background="#FFA1260D" IsTag="True" />
     <Category Id="CodeSchema_Class" Label="Class" BasedOn="CodeSchema_Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="Classes" />
     <Category Id="CodeSchema_Type" Label="Type" CanBeDataDriven="True" DefaultAction="Node:Both:CodeSchema_Member" Icon="CodeSchema_Class" NavigationActionLabel="Types" />
     <Category Id="Comment" Label="Comment" Description="Represents a user defined comment on the diagram" CanBeDataDriven="True" IsProviderRoot="False" NavigationActionLabel="Comments" />
     <Category Id="Contains" Label="Contains" Description="Whether the source of the link contains the target object" CanBeDataDriven="False" CanLinkedNodesBeDataDriven="True" IncomingActionLabel="Contained By" IsContainment="True" OutgoingActionLabel="Contains" />
   </Categories>
   <Properties>
+    <Property Id="Background" Label="Background" Description="The background color" DataType="System.Windows.Media.Brush" />
     <Property Id="Bounds" DataType="System.Windows.Rect" />
     <Property Id="CanBeDataDriven" Label="CanBeDataDriven" Description="CanBeDataDriven" DataType="System.Boolean" />
     <Property Id="CanLinkedNodesBeDataDriven" Label="CanLinkedNodesBeDataDriven" Description="CanLinkedNodesBeDataDriven" DataType="System.Boolean" />
@@ -94,6 +97,7 @@
     <Property Id="IsContainment" DataType="System.Boolean" />
     <Property Id="IsEnabled" DataType="System.Boolean" />
     <Property Id="IsProviderRoot" Label="IsProviderRoot" Description="IsProviderRoot" DataType="System.Boolean" />
+    <Property Id="IsTag" DataType="System.Boolean" />
     <Property Id="Label" Label="Label" Description="Displayable label of an Annotatable object" DataType="System.String" />
     <Property Id="Language" Label="Language" Description="Language" DataType="System.String" />
     <Property Id="Layout" DataType="System.String" />
@@ -111,8 +115,23 @@
   </QualifiedNames>
   <IdentifierAliases>
     <Alias n="1" Uri="Assembly=$(3b4d7a7b-b193-c7b8-731f-3f701a73df6d.OutputPathUri)" />
+    <Alias n="2" Id="(@1 Type=Actor)" />
+    <Alias n="3" Id="(@1 Type=Generation)" />
+    <Alias n="4" Id="(@1 Type=Monster)" />
   </IdentifierAliases>
   <Styles>
+    <Style TargetType="Node" GroupLabel="Category 6" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Category6')" />
+      <Setter Property="Background" Value="#FFA1260D" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Category 1" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Category1')" />
+      <Setter Property="Background" Value="#FFE51400" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Category 7" ValueLabel="Has category">
+      <Condition Expression="HasCategory('Category7')" />
+      <Setter Property="Background" Value="#FF347A30" />
+    </Style>
     <Style TargetType="Node" GroupLabel="Category 2" ValueLabel="Has category">
       <Condition Expression="HasCategory('Category2')" />
       <Setter Property="Background" Value="#FF339933" />
@@ -127,7 +146,7 @@
     </Style>
   </Styles>
   <Paths>
-    <Path Id="3b4d7a7b-b193-c7b8-731f-3f701a73df6d.OutputPath" Value="E:\Projects\Roguelike\Temp\bin\Debug\Assembly-CSharp.dll" />
-    <Path Id="3b4d7a7b-b193-c7b8-731f-3f701a73df6d.OutputPathUri" Value="file:///E:/Projects/Roguelike/Temp/bin/Debug/Assembly-CSharp.dll" />
+    <Path Id="3b4d7a7b-b193-c7b8-731f-3f701a73df6d.OutputPath" Value="E:\GitHub\SamHack\Roguelike\Temp\bin\Debug\Assembly-CSharp.dll" />
+    <Path Id="3b4d7a7b-b193-c7b8-731f-3f701a73df6d.OutputPathUri" Value="file:///E:/GitHub/SamHack/Roguelike/Temp/bin/Debug/Assembly-CSharp.dll" />
   </Paths>
 </DirectedGraph>

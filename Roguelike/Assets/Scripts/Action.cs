@@ -10,6 +10,7 @@ public static class Action
         {
             mapGenerator.GetTile((int)potentialLocation.transform.position.x, (int)potentialLocation.transform.position.y).UpdateTileType(Tile.TileType.OpenDoor);
         }
+        GameFlow.ExecuteTurn();
     }
 
     public static void CloseDoor(Transform thisLocation, Generation mapGenerator, Vector3 direction)
@@ -19,14 +20,15 @@ public static class Action
         {
             mapGenerator.GetTile((int)potentialLocation.transform.position.x, (int)potentialLocation.transform.position.y).UpdateTileType(Tile.TileType.ClosedDoor);
         }
+        GameFlow.ExecuteTurn();
     }
 
     public static void UseStairs(Transform thisLocation, Generation mapGenerator, GameManager theManager)
     {
         Tile currentTile = mapGenerator.GetTile((int)thisLocation.transform.position.x, (int)thisLocation.transform.position.y);
-        mapGenerator.levels[mapGenerator.currentLevel].SaveMap(mapGenerator.tileScript);
         if (currentTile.tileType == Tile.TileType.DownStairs)
         {
+            mapGenerator.levels[mapGenerator.currentLevel].SaveMap(mapGenerator.tileScript, true);
             mapGenerator.currentLevel++;
             mapGenerator.DisplayMap(mapGenerator.currentLevel, true);
         }
@@ -38,10 +40,12 @@ public static class Action
             }
             else
             {
+                mapGenerator.levels[mapGenerator.currentLevel].SaveMap(mapGenerator.tileScript, false);
                 mapGenerator.currentLevel--;
                 mapGenerator.DisplayMap(mapGenerator.currentLevel, false);
             }
         }
+        GameFlow.ExecuteTurn();
     }
 
     static bool IsActionPossible(Vector3 newLocation, Generation mapGenerator, Tile tile, Tile.TileType type, Tile.TileType negativeType) // Overflows

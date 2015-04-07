@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ActorStats : MonoBehaviour
+public class ActorStats
 {
-    
+    public ActorStats()
+    {
+
+    }
 }

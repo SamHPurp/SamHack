@@ -8,23 +8,31 @@ public class Level
     public int width,
                height,
                startingX,
-               startingY;
+               startingY,
+               levelNumber,
+               maxMonsters;
+
+    Generation mapGenerator;
     public bool built;
     public System.Random rnd;
 
     public Tile stairsUp,
                 stairsDown;
 
-    public List<Rect> rooms = new List<Rect>();
+    public List<Tile> openFloorSpace = new List<Tile>();
+    public List<Vector2> levelsMonsters = new List<Vector2>();
 
     public Tile.TileType[,] tileContents = new Tile.TileType[Generation.mapWidth, Generation.mapHeight];
 
-    public Level()
+    public Level(Generation theGen, int lvlNumber)
     {
         rnd = new System.Random();
+        levelNumber = lvlNumber;
+        maxMonsters = 3 + levelNumber;
+        mapGenerator = theGen;
     }
 
-    public void SaveMap(Tile[,] tileScript)
+    public void SaveMap(Tile[,] tileScript, bool down)
     {
         for(int x = 0; x < Generation.mapWidth; x++)
         {

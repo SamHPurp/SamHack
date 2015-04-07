@@ -3,17 +3,9 @@ using System.Collections;
 
 public class PlayerControl : Actor
 {
-    public Generation mapGenerator;
-    public CameraControl theMainCamera;
-    PlayerControl instance;
-
     void Awake()
     {
-        instance = this;
-        location = this.transform;
         this.tag = "Player";
-
-        mapGenerator = FindObjectOfType<Generation>();
     }
 	
 	void Update()
@@ -56,35 +48,65 @@ public class PlayerControl : Actor
                     Action.CloseDoor(location, mapGenerator, -Vector3.up);
             }
 
-            if (canMove)
+            if (canMove && !Input.GetKey(KeyCode.O) && !Input.GetKey(KeyCode.C)) // Expand with other movement keys in future
             {
                 if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Keypad4)) // left
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right);
+                {
+                    Movement.Move(location, -Vector3.right, Vector3.zero);
+                    GameFlow.ExecuteTurn();
+                }
 
                 if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.Keypad8)) // up
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.up);
+                {
+                    Movement.Move(location, Vector3.up, Vector3.zero);
+                    GameFlow.ExecuteTurn();
+                }
 
                 if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.Keypad6)) // right
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right);
+                {
+                    Movement.Move(location, Vector3.right, Vector3.zero);
+                    GameFlow.ExecuteTurn();
+                }
 
                 if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.Keypad2)) // down
-                    Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.up);
+                {
+                    Movement.Move(location, -Vector3.up, Vector3.zero);
+                    GameFlow.ExecuteTurn();
+                }
 
                 if (canMoveDiagonally)
                 {
                     if (Input.GetKeyDown(KeyCode.Keypad3)) // down right
-                        Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right, -Vector3.up);
+                    {
+                        Movement.Move(location, Vector3.right, -Vector3.up);
+                        GameFlow.ExecuteTurn();
+                    }
 
                     if (Input.GetKeyDown(KeyCode.Keypad1)) // down left
-                        Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right, -Vector3.up);
+                    {
+                        Movement.Move(location, -Vector3.right, -Vector3.up);
+                        GameFlow.ExecuteTurn();
+                    }
 
                     if (Input.GetKeyDown(KeyCode.Keypad7)) // up left
-                        Movement.Move(location, mapGenerator, theMainCamera, instance, -Vector3.right, Vector3.up);
+                    {
+                        Movement.Move(location, -Vector3.right, Vector3.up);
+                        GameFlow.ExecuteTurn();
+                    }
 
                     if (Input.GetKeyDown(KeyCode.Keypad9)) // up right
-                        Movement.Move(location, mapGenerator, theMainCamera, instance, Vector3.right, Vector3.up);
+                    {
+                        Movement.Move(location, Vector3.right, Vector3.up);
+                        GameFlow.ExecuteTurn();
+                    }
                 }
             }
         }
+
+        Camera.main.GetComponent<CameraControl>().UpdateLocation((int)transform.position.x, (int)transform.position.y);
 	}
+
+    protected override void Register() // Stops player register on the DungeonMaster
+    {
+    }
 }
