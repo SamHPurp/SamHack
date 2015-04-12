@@ -106,8 +106,7 @@ public class Generation : MonoBehaviour
     {
         thePlayer = (GameObject)Instantiate(playerPrefab, new Vector2(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y), Quaternion.identity);
         thePlayer.name = "Player";
-        theCamera = (GameObject)Instantiate(cameraPrefab, new Vector3(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y, -10), Quaternion.identity);
-        theCamera.name = "Main Camera";
+        theCamera = Camera.main.gameObject;
         theManager.RegisterPlayer(thePlayer, theCamera);
         theCamera.GetComponent<CameraControl>().RegisterPlayer(thePlayer);
     }
