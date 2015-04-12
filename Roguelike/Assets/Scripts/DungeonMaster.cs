@@ -6,15 +6,17 @@ public static class DungeonMaster
 {
     // TODO: Take into account size of open floor space in total of monster generation
 
-    static Generation mapGenerator;
-    static GameManager theManager;
-    static List<Monster> currentMonsters = new List<Monster>();
+    public static Generation mapGenerator;
+    public static GameManager theManager;
+    public static List<Monster> currentMonsters = new List<Monster>();
 
     public static void CreateInitialMonsters(Level level)
     {
         for(int i = 0; i < level.maxMonsters; i++)
         {
-            level.levelsMonsters.Add(mapGenerator.MonsterLocation(level));
+            Point monsterSpawn = mapGenerator.MonsterLocation(level);
+
+            level.monsterSpawns.Add(monsterSpawn);
         }
     }
 
@@ -29,10 +31,28 @@ public static class DungeonMaster
 
         currentMonsters.Clear();
 
-        foreach(Vector2 v2 in level.levelsMonsters)
+        if (level.monsterSpawns.Count > 0)
         {
-            currentMonsters.Add(theManager.TheMonster(v2));
+            for (int i = 0; i < level.monsterSpawns.Count; i++)
+            {
+                //level.levelsMonsters.Add(ScriptableObject.CreateInstance((level.monsterSpawns[i])));
+                ScriptableObject.CreateInstance("Monster");
+            }
+            currentMonsters = level.levelsMonsters;
         }
+        else
+        {
+            foreach (Monster monsters in level.levelsMonsters)
+            {
+                currentMonsters.Add(monsters);
+            }
+        }
+    }
+
+    public static void MonsterSlain(Actor monster)
+    {
+        currentMonsters.Remove((Monster)monster);
+        theManager.RemoveMonster(monster);
     }
 
     public static void Register(Generation me)

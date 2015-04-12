@@ -3,8 +3,9 @@ using System.Collections;
 
 public static class Action
 {
-    public static void OpenDoor(Transform thisLocation, Generation mapGenerator, Vector3 direction)
+    public static void OpenDoor(Transform thisLocation, Vector3 direction)
     {
+        Generation mapGenerator = DungeonMaster.mapGenerator;
         Tile potentialLocation = mapGenerator.GetTile((int)thisLocation.position.x + (int)direction.x, (int)thisLocation.position.y + (int)direction.y);
         if(IsActionPossible(thisLocation.position + direction, mapGenerator, potentialLocation, Tile.TileType.ClosedDoor, Tile.TileType.OpenDoor))
         {
@@ -13,8 +14,9 @@ public static class Action
         GameFlow.ExecuteTurn();
     }
 
-    public static void CloseDoor(Transform thisLocation, Generation mapGenerator, Vector3 direction)
+    public static void CloseDoor(Transform thisLocation, Vector3 direction)
     {
+        Generation mapGenerator = DungeonMaster.mapGenerator;
         Tile potentialLocation = mapGenerator.GetTile((int)thisLocation.position.x + (int)direction.x, (int)thisLocation.position.y + (int)direction.y);
         if (IsActionPossible(thisLocation.position + direction, mapGenerator, potentialLocation, Tile.TileType.OpenDoor, Tile.TileType.ClosedDoor))
         {
@@ -23,29 +25,58 @@ public static class Action
         GameFlow.ExecuteTurn();
     }
 
-    public static void UseStairs(Transform thisLocation, Generation mapGenerator, GameManager theManager)
+    public static void UseStairs(Transform thisLocation)
     {
-        Tile currentTile = mapGenerator.GetTile((int)thisLocation.transform.position.x, (int)thisLocation.transform.position.y);
+        GameManager theManager = DungeonMaster.theManager;
+        Generation mapGenerator = DungeonMaster.mapGenerator;
+        Tile currentTile = DungeonMaster.mapGenerator.GetTile((int)thisLocation.transform.position.x, (int)thisLocation.transform.position.y);
+        
         if (currentTile.tileType == Tile.TileType.DownStairs)
         {
-            mapGenerator.levels[mapGenerator.currentLevel].SaveMap(mapGenerator.tileScript, true);
-            mapGenerator.currentLevel++;
-            mapGenerator.DisplayMap(mapGenerator.currentLevel, true);
+            mapGenerator.levels[Game.currentLevel].SaveLevel(mapGenerator.tileScript, true);
+            Game.currentLevel++;
+            mapGenerator.DisplayMap(Game.currentLevel, true);
         }
         if (currentTile.tileType == Tile.TileType.UpStairs)
         {
-            if (mapGenerator.currentLevel == 0)
+            if (Game.currentLevel == 0)
             {
                 theManager.GameOver();
             }
             else
             {
-                mapGenerator.levels[mapGenerator.currentLevel].SaveMap(mapGenerator.tileScript, false);
-                mapGenerator.currentLevel--;
-                mapGenerator.DisplayMap(mapGenerator.currentLevel, false);
+                mapGenerator.levels[Game.currentLevel].SaveLevel(mapGenerator.tileScript, false);
+                Game.currentLevel--;
+                mapGenerator.DisplayMap(Game.currentLevel, false);
             }
         }
         GameFlow.ExecuteTurn();
+    }
+    
+    public static void AttackMelee(Tile currentTile, Tile attemptTile)
+    {
+        Debug.Log("Attacking");
+        Actor target = attemptTile.occupied.GetComponent<Actor>();
+
+        Effect.TakeDamage(target, 1);
+    }
+
+    public static void AssessAction(Transform thisLocation, Vector3 direction, Vector3 direction2)
+    {
+        Generation mapGenerator = DungeonMaster.mapGenerator;
+        Tile currentTile = mapGenerator.GetTile(thisLocation.transform.position);
+        Tile attemptTile = mapGenerator.GetTile(thisLocation.position + direction + direction2);
+
+        if (attemptTile.occupied != null)
+        {
+            AttackMelee(currentTile, attemptTile);
+            GameFlow.ExecuteTurn();
+        }
+        else if (attemptTile.walkable)
+        {
+            Movement.Move(thisLocation, direction, direction2);
+            GameFlow.ExecuteTurn();
+        }
     }
 
     static bool IsActionPossible(Vector3 newLocation, Generation mapGenerator, Tile tile, Tile.TileType type, Tile.TileType negativeType) // Overflows

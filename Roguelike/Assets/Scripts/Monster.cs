@@ -1,9 +1,23 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class Monster : Actor
 {
-    Renderer myRenderer;
+    public Monster(Point myLocation)
+    {
+        myGO.transform.position = myLocation.ToVector2();
+    }
+
+    public Monster(Vector2 myLocation)
+    {
+        myGO.transform.position = myLocation;
+    }
+
+    void Awake()
+    {
+        myStats = new ActorStats(this);
+    }
 
 	public override void TakeTurn()
     {

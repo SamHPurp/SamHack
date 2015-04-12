@@ -3,8 +3,21 @@ using System.Collections;
 
 public class ActorStats
 {
-    public ActorStats()
+    int health = 3;
+    Actor me;
+    public ActorStats(Actor actor)
     {
+        me = actor;
+    }
 
+    public void AlterHealth(int damage)
+    {
+        health = health - damage;
+
+        if(health == 0)
+        {
+            Debug.Log("Slain");
+            DungeonMaster.MonsterSlain(me);
+        }
     }
 }

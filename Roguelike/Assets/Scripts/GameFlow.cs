@@ -12,6 +12,11 @@ public static class GameFlow
         actors.Add(me);
     }
 
+    public static void UnregisterAsActor(Actor me)
+    {
+        actors.Remove(me);
+    }
+
     public static void ExecuteTurn()
     {
         turn++;

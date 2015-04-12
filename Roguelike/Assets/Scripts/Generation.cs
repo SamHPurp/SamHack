@@ -15,27 +15,23 @@ public class Generation : MonoBehaviour
                      mapHeight = 25;
 
     public GameManager theManager;
-    GameObject theCamera,
-               thePlayer,
-               tilePrefab;
+    GameObject tilePrefab;
+
     GameObject[,] tiles = new GameObject[mapWidth, mapHeight];
     public Tile[,] tileScript = new Tile[mapWidth, mapHeight];
     public List<Level> levels = new List<Level>();
     List<Tile> possibleFeatureLoctions = new List<Tile>();
 
-    Tile possibleDoor;
+    Tile possibleDoor; // across a few separate methods...
     Level buildingLevel;
 
-    public Vector2[] directions = new Vector2[4];
+    public Vector2[] directions = new Vector2[4]; // keep these out and declared in Awake.. it broke last time... :(
     int buildDirection;
-    public int currentLevel = 0,
-               seed;
+    public int seed;
     System.Random rnd;
 	
     void Awake()
     {
-        this.tag = "MapGeneration";
-
         Movement.RegisterGenerator(this);
         DungeonMaster.Register(this);
 
@@ -51,6 +47,11 @@ public class Generation : MonoBehaviour
 
         rnd = new System.Random();
         seed = rnd.Next();
+
+        for (int i = 0; i < directions.Length; i++)
+        {
+            Debug.Log(directions[i]);
+        }
     }
 	
 	void Start()
@@ -58,7 +59,7 @@ public class Generation : MonoBehaviour
         GenerateField();
 	}
 
-    public void BuildAllMaps(GameObject playerPrefab, GameObject cameraPrefab)
+    public void BuildAllMaps()
     {
         for(int i = 0; i < 30; i++)
         {
@@ -66,14 +67,18 @@ public class Generation : MonoBehaviour
             buildingLevel = levels[i];
             GenerateTheRooms(30);
             DungeonMaster.CreateInitialMonsters(levels[i]);
-            buildingLevel.SaveMap(tileScript, true);
+            buildingLevel.SaveLevel(tileScript, true);
+            Game.current.levels.Add(levels[i]);
         }
-        BuildPlayer(playerPrefab, cameraPrefab);
+        theManager.BuildPlayer();
+
         DisplayMap(0, true);
     }
 
     public void DisplayMap(int loadLevel, bool down)
     {
+        Debug.Log(levels[loadLevel]);
+
         for (int x = 0; x < mapWidth; x++)
         {
             for (int y = 0; y < mapHeight; y++)
@@ -82,7 +87,7 @@ public class Generation : MonoBehaviour
             }
         }
         SpawnPlayer(down);
-        DungeonMaster.SpawnMonsters(levels[loadLevel]);
+        //DungeonMaster.SpawnMonsters(levels[loadLevel]);
     }
 
     private void GenerateField()
@@ -101,29 +106,20 @@ public class Generation : MonoBehaviour
 
         WipeMap();
     }
-    
-    private void BuildPlayer(GameObject playerPrefab, GameObject cameraPrefab)
-    {
-        thePlayer = (GameObject)Instantiate(playerPrefab, new Vector2(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y), Quaternion.identity);
-        thePlayer.name = "Player";
-        theCamera = Camera.main.gameObject;
-        theManager.RegisterPlayer(thePlayer, theCamera);
-        theCamera.GetComponent<CameraControl>().RegisterPlayer(thePlayer);
-    }
 
     public void SpawnPlayer(bool down) // Arguement denotes the stairs to come out at
     {
         if (down)
         {
-            thePlayer.transform.position = new Vector2(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y);
-            theCamera.transform.position = new Vector3(levels[currentLevel].stairsUp.tileLocation.x, levels[currentLevel].stairsUp.tileLocation.y, -10);
-            Movement.Move(thePlayer.transform, Vector3.zero, Vector3.zero);
+            theManager.playerControl.myGO.transform.position = new Vector2(levels[Game.currentLevel].stairsUp.x, levels[Game.currentLevel].stairsUp.y);
+            Camera.main.transform.position = new Vector3(levels[Game.currentLevel].stairsUp.x, levels[Game.currentLevel].stairsUp.y, -10);
+            Movement.Move(theManager.playerControl.myGO.transform, Vector3.zero, Vector3.zero);
         }
         else
         {
-            thePlayer.transform.position = new Vector2(levels[currentLevel].stairsDown.tileLocation.x, levels[currentLevel].stairsDown.tileLocation.y);
-            theCamera.transform.position = new Vector3(levels[currentLevel].stairsDown.tileLocation.x, levels[currentLevel].stairsDown.tileLocation.y, -10);
-            Movement.Move(thePlayer.transform, Vector3.zero, Vector3.zero);
+            theManager.playerControl.myGO.transform.position = new Vector2(levels[Game.currentLevel].stairsDown.x, levels[Game.currentLevel].stairsDown.y);
+            Camera.main.transform.position = new Vector3(levels[Game.currentLevel].stairsDown.x, levels[Game.currentLevel].stairsDown.y, -10);
+            Movement.Move(theManager.playerControl.myGO.transform, Vector3.zero, Vector3.zero);
         }
     }
 
@@ -144,27 +140,27 @@ public class Generation : MonoBehaviour
         possibleFeatureLoctions.Clear();
         FillRect(0, 0, mapWidth, mapHeight, Tile.TileType.SolidRock);
     }
-
+        
     private void GenerateExitsAndEntrance() // TODO: Tidy up with .Where
     {
         bool stairsBuilt = false;
 
         while(stairsBuilt == false)
         {
-            List<Tile> potentialExitsAndEntrances = new List<Tile>(buildingLevel.openFloorSpace);
+            List<Point> potentialExitsAndEntrances = new List<Point>(buildingLevel.openFloorSpace);
             buildingLevel.stairsUp = buildingLevel.openFloorSpace[buildingLevel.rnd.Next(0, buildingLevel.openFloorSpace.Count)];
 
             for (int i = 0; i < potentialExitsAndEntrances.Count; i++)
             {
                 buildingLevel.stairsDown = buildingLevel.openFloorSpace[UnityEngine.Random.Range(0, buildingLevel.openFloorSpace.Count)];
-                if (buildingLevel.stairsDown.tileLocation.x > buildingLevel.stairsUp.tileLocation.x + 5
-                    || buildingLevel.stairsDown.tileLocation.x < buildingLevel.stairsUp.tileLocation.x - 5)
+                if (buildingLevel.stairsDown.x > buildingLevel.stairsUp.x + 5
+                    || buildingLevel.stairsDown.x < buildingLevel.stairsUp.x - 5)
                 {
-                    if (buildingLevel.stairsDown.tileLocation.y > buildingLevel.stairsUp.tileLocation.y + 5
-                        || buildingLevel.stairsDown.tileLocation.y < buildingLevel.stairsUp.tileLocation.y - 5)
+                    if (buildingLevel.stairsDown.y > buildingLevel.stairsUp.y + 5
+                        || buildingLevel.stairsDown.y < buildingLevel.stairsUp.y - 5)
                     {
-                        buildingLevel.stairsUp.UpdateTileType(Tile.TileType.UpStairs);
-                        buildingLevel.stairsDown.UpdateTileType(Tile.TileType.DownStairs);
+                        GetTile(buildingLevel.stairsUp.ToVector2()).UpdateTileType(Tile.TileType.UpStairs);
+                        GetTile(buildingLevel.stairsDown.ToVector2()).UpdateTileType(Tile.TileType.DownStairs);
                         stairsBuilt = true;
                         break;
                     }
@@ -192,7 +188,7 @@ public class Generation : MonoBehaviour
                     tileScript[startingX + x, startingY + y].UpdateTileType(tileType);
                     if (tileType == Tile.TileType.Floor)
                     {
-                        buildingLevel.openFloorSpace.Add(tileScript[startingX + x, startingY + y]);
+                        buildingLevel.openFloorSpace.Add(new Point(startingX + x, startingY + y));
                     }
                 }
             }
@@ -392,19 +388,19 @@ public class Generation : MonoBehaviour
 
     private Tile BuildDirection(Tile potentialBuildSpot)
     {
-        int tileX = (int)potentialBuildSpot.transform.localPosition.x;
-        int tileY = (int)potentialBuildSpot.transform.localPosition.y;
 
-        if((tileX != mapWidth && tileY != mapHeight) || (tileX != 0 && tileY != mapHeight) || (tileX != mapWidth && tileY != 0) || (tileX != 0 && tileY != 0))
+        Point tile = new Point(potentialBuildSpot.tileLocation);
+
+        if((tile.x != mapWidth && tile.y != mapHeight) || (tile.x != 0 && tile.y != mapHeight) || (tile.x != mapWidth && tile.y != 0) || (tile.x != 0 && tile.y != 0))
         {
             for (int i = 0; i < directions.Length; i++)
             {
-                if (tileX + directions[i].x < mapWidth && tileY + directions[i].y < mapHeight && tileX + directions[i].x > 0 && tileY + directions[i].y > 0)
+                if (tile.x + directions[i].x < mapWidth && tile.y + directions[i].y < mapHeight && tile.x + directions[i].x > 0 && tile.y + directions[i].y > 0)
                 {
-                    if (tileScript[tileX + (int)directions[i].x, tileY + (int)directions[i].y].tileType == Tile.TileType.SolidRock)
+                    if (tileScript[tile.x + (int)directions[i].x, tile.y + (int)directions[i].y].tileType == Tile.TileType.SolidRock)
                     {
                         buildDirection = i;
-                        return tileScript[tileX + (int)directions[i].x, tileY + (int)directions[i].y];
+                        return tileScript[tile.x + (int)directions[i].x, tile.y + (int)directions[i].y];
                     }
                 }
             }
@@ -427,26 +423,31 @@ public class Generation : MonoBehaviour
         return tileScript[(int)v3.x, (int)v3.y];
     }
 
-    public Vector2 MonsterLocation(Level lvl)
+    public Tile GetTile(Point p) // Overloads
     {
-        List<Tile> potentialLocations = lvl.openFloorSpace.Where(loc => !loc.occupied && loc.walkable && loc.tileType != Tile.TileType.UpStairs).ToList();
+        return tileScript[p.x, p.y];
+    }
+
+    public Point MonsterLocation(Level lvl)
+    {
+        List<Tile> potentialLocations = lvl.openFloorSpace.Select(loc => GetTile(loc)).Where(loc => !loc.occupied && loc.walkable && loc.tileType != Tile.TileType.UpStairs).ToList();
         while (potentialLocations.Count > 0)
         {
             Tile maybeHere = potentialLocations[UnityEngine.Random.Range(0, potentialLocations.Count)];
             if (lvl.levelNumber > 0)
             {
 
-                if (maybeHere.tileLocation.x > levels[0].stairsUp.tileLocation.x + 3 || maybeHere.tileLocation.x < levels[0].stairsUp.tileLocation.x - 3)
+                if (maybeHere.tileLocation.x > levels[0].stairsUp.x + 3 || maybeHere.tileLocation.x < levels[0].stairsUp.x - 3)
                 {
-                    if (maybeHere.tileLocation.y > levels[0].stairsUp.tileLocation.y + 3 || maybeHere.tileLocation.y < levels[0].stairsUp.tileLocation.y - 3)
-                        return maybeHere.transform.position;
+                    if (maybeHere.tileLocation.y > levels[0].stairsUp.y + 3 || maybeHere.tileLocation.y < levels[0].stairsUp.y - 3)
+                        return new Point(maybeHere.transform.position);
                     else
                         potentialLocations.Remove(maybeHere);
                 }
                 else
                     potentialLocations.Remove(maybeHere);
             }
-            return maybeHere.transform.position;
+            return new Point(maybeHere.transform.position);
         }
         throw new Exception("can't find a free location");
     }

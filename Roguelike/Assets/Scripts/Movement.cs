@@ -15,8 +15,8 @@ public static class Movement
         Vector3 newLocation = direction + direction2;
         if (CanWeMoveThisDirection(thisLocation.position + newLocation))
         {
-            mapGenerator.GetTile((int)thisLocation.position.x, (int)thisLocation.position.y).occupied = false;
-            mapGenerator.GetTile((int)(thisLocation.position.x + newLocation.x), (int)(thisLocation.position.y + newLocation.y)).occupied = true;
+            mapGenerator.GetTile((int)thisLocation.position.x, (int)thisLocation.position.y).occupied = null;
+            mapGenerator.GetTile((int)(thisLocation.position.x + newLocation.x), (int)(thisLocation.position.y + newLocation.y)).occupied = thisLocation.gameObject;
             thisLocation.position += newLocation;
         }
     }
@@ -30,7 +30,7 @@ public static class Movement
         else
         {
             Tile potentialLocation = mapGenerator.GetTile((int)newLocation.x, (int)newLocation.y);
-            if (potentialLocation.walkable && !potentialLocation.occupied)
+            if (potentialLocation.walkable && potentialLocation.occupied == null)
             {
                 return true;
             }

@@ -4,25 +4,17 @@ using System.Collections.Generic;
 
 public class GameManager : MonoBehaviour
 {
-    public GameObject playerPrefab;
-    public GameObject cameraPrefab;
+    public Canvas mainMenu;
     GameObject monsterPrefab;
     Generation theGenerator;
     GameObject thePlayer;
     GameObject theCamera;
+    public Player playerControl;
 
 	void Awake()
     {
         DungeonMaster.Register(this);
 
-        if (playerPrefab == null)
-        {
-            playerPrefab = (GameObject)Resources.Load("Prefabs/Player");
-        }
-        if (cameraPrefab == null)
-        {
-            cameraPrefab = (GameObject)Resources.Load("Prefabs/Main Camera");
-        }
         if (monsterPrefab == null)
         {
             monsterPrefab = (GameObject)Resources.Load("Prefabs/Monster");
@@ -36,21 +28,20 @@ public class GameManager : MonoBehaviour
     {
         if(Input.GetKeyDown(KeyCode.Semicolon))
         {
-            theGenerator.BuildAllMaps(playerPrefab, cameraPrefab);
+            theGenerator.BuildAllMaps();
         }
     }
 
-    public Monster TheMonster(Vector2 v2)
+    public void RemoveMonster(Actor me)
     {
-        GameObject x = (GameObject)Instantiate(monsterPrefab, v2, Quaternion.identity);
-        Monster y = x.GetComponent<Monster>();
-        return y;
+        GameFlow.UnregisterAsActor(me);
+        Destroy(me.myGO);
     }
 
-    public void RemoveMonster(Monster me)
+    public void RemoveMonster(Player me)
     {
+        GameFlow.UnregisterAsActor(me);
         Destroy(me);
-        Debug.Log("Destroying " + me);
     }
 
     public void RegisterPlayer(GameObject player, GameObject theBuiltCamera)
@@ -59,8 +50,34 @@ public class GameManager : MonoBehaviour
         theCamera = theBuiltCamera;
     }
 
+    public void BuildPlayer()
+    {
+        playerControl = (Player)ScriptableObject.CreateInstance("Player");
+        playerControl.myGO.name = "Player";
+        theCamera = Camera.main.gameObject;
+        RegisterPlayer(playerControl.myGO, theCamera);
+        theCamera.GetComponent<CameraControl>().RegisterPlayer(playerControl.myGO);
+    }
+
     public void GameOver()
     {
         Debug.Log("Game Over!");
+    }
+
+    public void StartLevel()
+    {
+        theGenerator.BuildAllMaps();
+        mainMenu.enabled = false;
+    }
+
+    public void ExitGame()
+    {
+        Application.Quit();
+    }
+
+    public void Load()
+    {
+        SaveLoad.LoadGame();
+        mainMenu.enabled = false;
     }
 }

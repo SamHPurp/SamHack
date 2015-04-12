@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Linq;
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
+[System.Serializable]
 public class Level
 {
     public int width,
@@ -12,15 +14,19 @@ public class Level
                levelNumber,
                maxMonsters;
 
+    [System.NonSerialized]
     Generation mapGenerator;
+
     public bool built;
     public System.Random rnd;
 
-    public Tile stairsUp,
-                stairsDown;
+    public Point stairsUp,
+                 stairsDown;
 
-    public List<Tile> openFloorSpace = new List<Tile>();
-    public List<Vector2> levelsMonsters = new List<Vector2>();
+    public List<Point> openFloorSpace = new List<Point>();
+    public List<Point> monsterSpawns = new List<Point>();
+
+    public List<Monster> levelsMonsters = new List<Monster>();
 
     public Tile.TileType[,] tileContents = new Tile.TileType[Generation.mapWidth, Generation.mapHeight];
 
@@ -32,7 +38,15 @@ public class Level
         mapGenerator = theGen;
     }
 
-    public void SaveMap(Tile[,] tileScript, bool down)
+    public void SaveLevel(Tile[,] tileScript, bool down)
+    {
+        SaveMap(tileScript, down);
+        SaveActors();
+        SaveItems();
+        SaveTraps();
+    }
+
+    private void SaveMap(Tile[,] tileScript, bool down)
     {
         for(int x = 0; x < Generation.mapWidth; x++)
         {
@@ -41,5 +55,23 @@ public class Level
                 tileContents[x, y] = tileScript[x, y].tileType;
             }
         }
+    }
+
+    private void SaveActors()
+    {
+        foreach(Monster savingMonster in levelsMonsters)
+        {
+            
+        }
+    }
+
+    private void SaveItems()
+    {
+        //TODO
+    }
+
+    private void SaveTraps()
+    {
+        //TODO
     }
 }

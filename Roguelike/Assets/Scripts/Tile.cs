@@ -1,14 +1,23 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
+[System.Serializable]
 public class Tile : MonoBehaviour
 {
+    [System.NonSerialized]
     Renderer thisRenderer;
-    public bool occupied,
-                walkable;
 
+    [System.NonSerialized]
+    public bool walkable;
+
+    [System.NonSerialized]
+    public GameObject occupied;
+
+    [System.NonSerialized]
     public Generation theGenerator;
 
+    [System.NonSerialized]
     public Vector2 tileLocation;
 
     void Awake()
@@ -17,7 +26,9 @@ public class Tile : MonoBehaviour
         theGenerator = FindObjectOfType<Generation>();
     }
 
+    [System.Serializable]
     public enum TileType { Floor, Corridor, Wall, SolidRock, OpenDoor, ClosedDoor, UpStairs, DownStairs };
+
     public TileType tileType;
 
     public void CreateFeature(Tile theTile)
