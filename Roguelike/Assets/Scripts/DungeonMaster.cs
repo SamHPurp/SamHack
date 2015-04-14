@@ -15,7 +15,6 @@ public static class DungeonMaster
         for(int i = 0; i < level.maxMonsters; i++)
         {
             Point monsterSpawn = mapGenerator.MonsterLocation(level);
-
             level.monsterSpawns.Add(monsterSpawn);
         }
     }
@@ -25,9 +24,7 @@ public static class DungeonMaster
         Monster[] monster = currentMonsters.ToArray();
 
         for (int i = 0; i < monster.Length; i++)
-        {
             theManager.RemoveMonster(monster[i]);
-        }
 
         currentMonsters.Clear();
 
@@ -35,18 +32,17 @@ public static class DungeonMaster
         {
             for (int i = 0; i < level.monsterSpawns.Count; i++)
             {
-                //level.levelsMonsters.Add(ScriptableObject.CreateInstance((level.monsterSpawns[i])));
-                ScriptableObject.CreateInstance("Monster");
+                Monster builtMonster = (Monster)ScriptableObject.CreateInstance("Monster");
+                builtMonster.myGO.name = "Monster";
+                theManager.PlaceMonster(builtMonster, level.monsterSpawns[i]);
+                level.levelsMonsters.Add(builtMonster);
+                level.monsterSpawns.Remove(level.monsterSpawns[i]);
             }
             currentMonsters = level.levelsMonsters;
         }
         else
-        {
             foreach (Monster monsters in level.levelsMonsters)
-            {
                 currentMonsters.Add(monsters);
-            }
-        }
     }
 
     public static void MonsterSlain(Actor monster)

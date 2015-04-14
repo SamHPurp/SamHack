@@ -7,22 +7,16 @@ public class Player : Actor
 
     protected override void Awake()
     {
-        myGO = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        AddNormalComponents();
+        base.Awake();
         mover = myGO.AddComponent<PlayerInputHandler>();
         mover.playerController = this;
-        myStats = new ActorStats(this);
-    }
-
-    public override Transform location
-    {
-        get
-        {
-            return null;
-        }
     }
 
     protected override void Register() // Stops player register on the DungeonMaster
+    {
+    }
+
+    public override void TakeTurn() // Stops user registering a turn
     {
     }
 }

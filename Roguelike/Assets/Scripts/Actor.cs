@@ -4,6 +4,7 @@ using System.Collections;
 [System.Serializable]
 public class Actor : ScriptableObject
 {
+    [System.NonSerialized]
     public GameObject myGO;
 
     public virtual Transform location
@@ -11,6 +12,14 @@ public class Actor : ScriptableObject
         get
         {
             return myGO.transform;
+        }
+    }
+
+    public virtual Point locationPoint
+    {
+        get
+        {
+            return new Point((int)myGO.transform.position.x, (int)myGO.transform.position.y);
         }
     }
 
@@ -22,17 +31,16 @@ public class Actor : ScriptableObject
     public bool paralysed = false;
 
     [System.NonSerialized]
+    protected Renderer myRenderer;
+
+    [System.NonSerialized]
     public ActorStats myStats;
 
     protected virtual void Awake()
     {
         myGO = GameObject.CreatePrimitive(PrimitiveType.Quad);
-        AddNormalComponents();
-        myGO.AddComponent<ActorController>();
-    }
-
-    void Start()
-    {
+        myRenderer = myGO.GetComponent<Renderer>();
+        myStats = new ActorStats(this);
         Register();
         mapGenerator = FindObjectOfType<Generation>();
     }
@@ -44,10 +52,7 @@ public class Actor : ScriptableObject
 
     public virtual void TakeTurn()
     {
-    }
-
-    protected virtual void AddNormalComponents()
-    {
-        //MeshFilter mf = myGO.AddComponent<MeshFilter>();
+        Vector3 direction = mapGenerator.directions[Random.Range(0, mapGenerator.directions.Length)];
+        Movement.Move(location, direction, -Vector3.zero);
     }
 }

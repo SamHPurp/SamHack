@@ -25,9 +25,7 @@ public class PlayerInputHandler : MonoBehaviour
         if (!playerController.paralysed)
         {
             if (Input.GetKeyDown(KeyCode.Equals))
-            {
                 Action.UseStairs(location);
-            }
 
             if (Input.GetKey(KeyCode.O)) // Open Doors
             {

@@ -24,16 +24,12 @@ public static class Movement
     static bool CanWeMoveThisDirection(Vector3 newLocation)
     {
         if (newLocation.x < 0 || newLocation.y < 0 || newLocation.x > Generation.mapWidth || newLocation.y > Generation.mapHeight)
-        {
             return false;
-        }
         else
         {
             Tile potentialLocation = mapGenerator.GetTile((int)newLocation.x, (int)newLocation.y);
             if (potentialLocation.walkable && potentialLocation.occupied == null)
-            {
                 return true;
-            }
         }
         return false;
     }

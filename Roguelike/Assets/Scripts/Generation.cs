@@ -36,9 +36,7 @@ public class Generation : MonoBehaviour
         DungeonMaster.Register(this);
 
         if (tilePrefab == null)
-        {
             tilePrefab = (GameObject)Resources.Load("Prefabs/Tile");
-        }
 
         directions[0] = new Vector2(1, 0); // look right
         directions[1] = new Vector2(0, -1); // look down
@@ -62,7 +60,7 @@ public class Generation : MonoBehaviour
             buildingLevel = levels[i];
             GenerateTheRooms(30);
             DungeonMaster.CreateInitialMonsters(levels[i]);
-            buildingLevel.SaveLevel(tileScript, true);
+            buildingLevel.SaveLevel(tileScript, true, true);
             Game.current.levels.Add(levels[i]);
         }
         theManager.BuildPlayer();
@@ -72,17 +70,12 @@ public class Generation : MonoBehaviour
 
     public void DisplayMap(int loadLevel, bool down)
     {
-        Debug.Log(levels[loadLevel]);
-
         for (int x = 0; x < mapWidth; x++)
-        {
             for (int y = 0; y < mapHeight; y++)
-            {
                 tileScript[x, y].UpdateTileType(levels[loadLevel].tileContents[x, y]);
-            }
-        }
+
         theManager.SpawnPlayer(down);
-        //DungeonMaster.SpawnMonsters(levels[loadLevel]);
+        DungeonMaster.SpawnMonsters(levels[loadLevel]);
     }
 
     private void GenerateField()
@@ -98,7 +91,6 @@ public class Generation : MonoBehaviour
                 tileScript[x, y].tileLocation = new Vector2(x, y);
             }
         }
-
         WipeMap();
     }
 
@@ -106,10 +98,9 @@ public class Generation : MonoBehaviour
     {
         WipeMap();
         CreateFirstRoom();
+
         for (int i = 0; i < numberOfRooms; i++)
-        {
             CreateNewFeature();
-        }
 
         GenerateExitsAndEntrance();
     }
@@ -144,15 +135,12 @@ public class Generation : MonoBehaviour
                         break;
                     }
                     else
-                    {
                         potentialExitsAndEntrances.Remove(buildingLevel.stairsDown);
-                    }
                 }
             }
+
             if(stairsBuilt)
-            {
                 break;
-            }
         }
     }
 
@@ -166,9 +154,7 @@ public class Generation : MonoBehaviour
                 {
                     tileScript[startingX + x, startingY + y].UpdateTileType(tileType);
                     if (tileType == Tile.TileType.Floor)
-                    {
                         buildingLevel.openFloorSpace.Add(new Point(startingX + x, startingY + y));
-                    }
                 }
             }
         }
@@ -199,13 +185,10 @@ public class Generation : MonoBehaviour
         if (possibleDoor != null)
         {
             if (UnityEngine.Random.Range(0, 2) == 0)
-            {
                 possibleDoor.UpdateTileType(Tile.TileType.ClosedDoor);
-            }
             else
-            {
                 possibleDoor.UpdateTileType(Tile.TileType.OpenDoor);
-            }
+
             SelectNewFeature(possibleDoor);
             possibleFeatureLoctions.Remove(possibleDoor);
         }
@@ -222,13 +205,10 @@ public class Generation : MonoBehaviour
         if (possibleDoor != null)
         {
             if (UnityEngine.Random.Range(0, 2) == 0)
-            {
                 possibleDoor.UpdateTileType(Tile.TileType.ClosedDoor);
-            }
             else
-            {
                 possibleDoor.UpdateTileType(Tile.TileType.OpenDoor);
-            }
+
             SelectNewFeature(possibleDoor);
             possibleFeatureLoctions.Remove(possibleDoor);
         }
@@ -269,64 +249,41 @@ public class Generation : MonoBehaviour
 
     }
 
-    private void BuildShortPath(int pathWidth, int pathHeight, int tileX, int tileY)
-    {
-        if(buildDirection == 0)
-        {
-            if(tileX + pathWidth < mapWidth)
-            {
-                ConstructRoom(tileX,tileY,pathWidth,1, Tile.TileType.Floor);
-            }
-        }
-    }
-
     private void BuildNewRoom(int roomWidth, int roomHeight, int tileX, int tileY, int widthModifer, int heightModifer)
     {
-        if (buildDirection == 0)
+        switch(buildDirection)
         {
-            if ((tileX > 0 && tileX < mapWidth) && (tileY - heightModifer > 0 && tileY < mapHeight))
-            {
-                ConstructRoom(tileX + 1, tileY - heightModifer, roomWidth, roomHeight, Tile.TileType.Floor);
-            }
-        }
+            case 0:
+                if ((tileX > 0 && tileX < mapWidth) && (tileY - heightModifer > 0 && tileY < mapHeight))
+                    ConstructRoom(tileX + 1, tileY - heightModifer, roomWidth, roomHeight, Tile.TileType.Floor);
+                break;
 
-        if (buildDirection == 1)
-        {
-            if ((tileX - widthModifer > 0 && tileX < mapWidth) && (tileY > 0 && tileY < mapHeight))
-            {
-                ConstructRoom(tileX - widthModifer, tileY - roomHeight, roomWidth, roomHeight, Tile.TileType.Floor);
-            }
-        }
+            case 1:
+                if ((tileX - widthModifer > 0 && tileX < mapWidth) && (tileY > 0 && tileY < mapHeight))
+                    ConstructRoom(tileX - widthModifer, tileY - roomHeight, roomWidth, roomHeight, Tile.TileType.Floor);
+                break;
 
-        if (buildDirection == 2)
-        {
-            if (tileX - roomWidth - 1 > 0 && (tileY - heightModifer > 0 && tileY < mapHeight))
-            {
-                ConstructRoom(tileX - roomWidth, tileY - heightModifer, roomWidth, roomHeight, Tile.TileType.Floor);
-            }
-        }
+            case 2:
+                if (tileX - roomWidth - 1 > 0 && (tileY - heightModifer > 0 && tileY < mapHeight))
+                    ConstructRoom(tileX - roomWidth, tileY - heightModifer, roomWidth, roomHeight, Tile.TileType.Floor);
+                break;
 
-        if (buildDirection == 3)
-        {
-            if ((tileX - widthModifer > 0 && tileX < mapWidth) && (tileY < mapHeight))
-            {
-                ConstructRoom(tileX - widthModifer, tileY + 1, roomWidth, roomHeight, Tile.TileType.Floor);
-            }
+            case 3:
+                if ((tileX - widthModifer > 0 && tileX < mapWidth) && (tileY < mapHeight))
+                    ConstructRoom(tileX - widthModifer, tileY + 1, roomWidth, roomHeight, Tile.TileType.Floor);
+                break;
+
+            default:
+                throw new Exception("ERROR: Build New Room");
         }
     }
 
     private void CollectPossiblePaths(int sx, int sy, int j, int k)
     {
         for (int x = 0; x < j; x++)
-        {
             for(int y = 0; y < k; y++)
-            {
                 if(x == 0 || y == 0 || x == j - 1 || y == k - 1)
-                {
                     possibleFeatureLoctions.Add(tileScript[sx + x, sy + y]);
-                }
-            }
-        }
     }
 
     private bool IsBuildSpaceClear(int sx, int sy, int j, int k)
@@ -360,14 +317,11 @@ public class Generation : MonoBehaviour
 
     private Tile SelectRandomSpot()
     {
-        Tile randomedTile = possibleFeatureLoctions[UnityEngine.Random.Range(0, possibleFeatureLoctions.Count)];
-
-        return randomedTile;
+        return possibleFeatureLoctions[UnityEngine.Random.Range(0, possibleFeatureLoctions.Count)];
     }
 
     private Tile BuildDirection(Tile potentialBuildSpot)
     {
-
         Point tile = new Point(potentialBuildSpot.tileLocation);
 
         if((tile.x != mapWidth && tile.y != mapHeight) || (tile.x != 0 && tile.y != mapHeight) || (tile.x != mapWidth && tile.y != 0) || (tile.x != 0 && tile.y != 0))
@@ -415,7 +369,6 @@ public class Generation : MonoBehaviour
             Tile maybeHere = potentialLocations[UnityEngine.Random.Range(0, potentialLocations.Count)];
             if (lvl.levelNumber > 0)
             {
-
                 if (maybeHere.tileLocation.x > levels[0].stairsUp.x + 3 || maybeHere.tileLocation.x < levels[0].stairsUp.x - 3)
                 {
                     if (maybeHere.tileLocation.y > levels[0].stairsUp.y + 3 || maybeHere.tileLocation.y < levels[0].stairsUp.y - 3)

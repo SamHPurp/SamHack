@@ -11,7 +11,6 @@ public class Tile : MonoBehaviour
     [System.NonSerialized]
     public bool walkable;
 
-    [System.NonSerialized]
     public GameObject occupied;
 
     [System.NonSerialized]
@@ -43,58 +42,48 @@ public class Tile : MonoBehaviour
         switch(newTileSet)
         {
             case TileType.Floor:
-                {
                     thisRenderer.material.color = Color.green;
                     walkable = true;
                     break;
-                }
+
             case TileType.Corridor:
-                {
                     thisRenderer.material.color = Color.magenta;
                     walkable = true;
                     break;
-                }
+
             case TileType.Wall:
-                {
                     thisRenderer.material.color = Color.blue;
                     walkable = false;
                     break;
-                }
+
             case TileType.SolidRock:
-                {
                     thisRenderer.material.color = Color.black;
                     walkable = false;
                     break;
-                }
+
             case TileType.OpenDoor:
-                {
                     thisRenderer.material.color = Color.cyan;
                     walkable = true;
                     break;
-                }
+
             case TileType.ClosedDoor:
-                {
                     thisRenderer.material.color = Color.red;
                     walkable = false;
                     break;
-                }
+
             case TileType.UpStairs:
-                {
                     thisRenderer.material.color = Color.yellow;
                     walkable = true;
                     break;
-                }
+
             case TileType.DownStairs:
-                {
                     thisRenderer.material.color = Color.white;
                     walkable = true;
                     break;
-                }
+
             default:
-                {
                     Debug.Log("<color=red>Incorrect TileType Assignment</color>");
                     break;
-                }
         }
     }
 }

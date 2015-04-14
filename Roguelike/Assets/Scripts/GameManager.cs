@@ -10,15 +10,14 @@ public class GameManager : MonoBehaviour
     GameObject thePlayer;
     GameObject theCamera;
     public Player playerControl;
+    int cameraDistance = -10;
 
 	void Awake()
     {
         DungeonMaster.Register(this);
 
         if (monsterPrefab == null)
-        {
             monsterPrefab = (GameObject)Resources.Load("Prefabs/Monster");
-        }
 
         mapGenerator = FindObjectOfType<Generation>();
         mapGenerator.theManager = this;
@@ -27,9 +26,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Semicolon))
-        {
             mapGenerator.BuildAllMaps();
-        }
     }
 
     public void RemoveMonster(Actor me)
@@ -44,10 +41,15 @@ public class GameManager : MonoBehaviour
         Destroy(me);
     }
 
+    public void PlaceMonster(Monster monster, Point spawnLocation)
+    {
+        monster.myGO.transform.position = new Vector3(spawnLocation.x,spawnLocation.y, -0.3f);
+    }
+
     public void RegisterPlayer(GameObject player, GameObject theBuiltCamera)
     {
         thePlayer = player;
-        theCamera = theBuiltCamera;
+        theCamera = theBuiltCamera; // fix later
     }
 
     public void BuildPlayer()
@@ -61,16 +63,17 @@ public class GameManager : MonoBehaviour
 
     public void SpawnPlayer(bool down) // Arguement denotes the stairs to come out at
     {
+        Level newLevel = mapGenerator.levels[Game.currentLevel];
         if (down)
         {
-            playerControl.myGO.transform.position = new Vector2(mapGenerator.levels[Game.currentLevel].stairsUp.x, mapGenerator.levels[Game.currentLevel].stairsUp.y);
-            Camera.main.transform.position = new Vector3(mapGenerator.levels[Game.currentLevel].stairsUp.x, mapGenerator.levels[Game.currentLevel].stairsUp.y, -10);
+            playerControl.myGO.transform.position = new Vector2(newLevel.stairsUp.x, newLevel.stairsUp.y);
+            Camera.main.transform.position = new Vector3(newLevel.stairsUp.x, newLevel.stairsUp.y, cameraDistance);
             Movement.Move(playerControl.myGO.transform, Vector3.zero, Vector3.zero);
         }
         else
         {
-            playerControl.myGO.transform.position = new Vector2(mapGenerator.levels[Game.currentLevel].stairsDown.x, mapGenerator.levels[Game.currentLevel].stairsDown.y);
-            Camera.main.transform.position = new Vector3(mapGenerator.levels[Game.currentLevel].stairsDown.x, mapGenerator.levels[Game.currentLevel].stairsDown.y, -10);
+            playerControl.myGO.transform.position = new Vector2(newLevel.stairsDown.x, newLevel.stairsDown.y);
+            Camera.main.transform.position = new Vector3(newLevel.stairsDown.x, newLevel.stairsDown.y, cameraDistance);
             Movement.Move(playerControl.myGO.transform, Vector3.zero, Vector3.zero);
         }
     }

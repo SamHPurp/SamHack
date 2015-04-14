@@ -4,24 +4,16 @@ using System.Collections;
 [System.Serializable]
 public class Monster : Actor
 {
-    public Monster(Point myLocation)
-    {
-        myGO.transform.position = myLocation.ToVector2();
-    }
+    [System.NonSerialized]
+    ActorController mover;
 
-    public Monster(Vector2 myLocation)
+    protected override void Awake()
     {
-        myGO.transform.position = myLocation;
-    }
+        base.Awake();
+        mover = myGO.AddComponent<ActorController>();
+        mover.monsterController = this;
 
-    void Awake()
-    {
-        myStats = new ActorStats(this);
-    }
-
-	public override void TakeTurn()
-    {
-        Vector3 direction = mapGenerator.directions[Random.Range(0,mapGenerator.directions.Length)];
-        Movement.Move(location, direction, -Vector3.zero);
+        Material mat = (Material)Resources.Load("Materials/Monster");
+        myRenderer.material = new Material(mat);
     }
 }

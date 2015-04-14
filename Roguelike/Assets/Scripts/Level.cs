@@ -26,6 +26,7 @@ public class Level
     public List<Point> openFloorSpace = new List<Point>();
     public List<Point> monsterSpawns = new List<Point>();
 
+    //[NonSerialized]
     public List<Monster> levelsMonsters = new List<Monster>();
 
     public Tile.TileType[,] tileContents = new Tile.TileType[Generation.mapWidth, Generation.mapHeight];
@@ -38,10 +39,18 @@ public class Level
         mapGenerator = theGen;
     }
 
-    public void SaveLevel(Tile[,] tileScript, bool down)
+    public void SaveLevel(Tile[,] tileScript, bool down, bool initial)
     {
         SaveMap(tileScript, down);
-        SaveActors();
+        SaveActors(initial);
+        SaveItems();
+        SaveTraps();
+    }
+
+    public void SaveLevel(bool initial)
+    {
+        //SaveMap(tileScript, down);
+        SaveActors(initial);
         SaveItems();
         SaveTraps();
     }
@@ -49,19 +58,17 @@ public class Level
     private void SaveMap(Tile[,] tileScript, bool down)
     {
         for(int x = 0; x < Generation.mapWidth; x++)
-        {
             for(int y= 0; y < Generation.mapHeight; y++)
-            {
                 tileContents[x, y] = tileScript[x, y].tileType;
-            }
-        }
     }
 
-    private void SaveActors()
+    private void SaveActors(bool initial)
     {
-        foreach(Monster savingMonster in levelsMonsters)
+        if (!initial)
         {
-            
+            monsterSpawns.Clear();
+            foreach (Monster monster in DungeonMaster.currentMonsters)
+                monsterSpawns.Add(monster.locationPoint);
         }
     }
 

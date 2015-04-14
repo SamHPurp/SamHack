@@ -33,7 +33,7 @@ public static class Action
         
         if (currentTile.tileType == Tile.TileType.DownStairs)
         {
-            mapGenerator.levels[Game.currentLevel].SaveLevel(mapGenerator.tileScript, true);
+            mapGenerator.levels[Game.currentLevel].SaveLevel(mapGenerator.tileScript, true, false);
             Game.currentLevel++;
             mapGenerator.DisplayMap(Game.currentLevel, true);
         }
@@ -45,7 +45,7 @@ public static class Action
             }
             else
             {
-                mapGenerator.levels[Game.currentLevel].SaveLevel(mapGenerator.tileScript, false);
+                mapGenerator.levels[Game.currentLevel].SaveLevel(mapGenerator.tileScript, false, false);
                 Game.currentLevel--;
                 mapGenerator.DisplayMap(Game.currentLevel, false);
             }
@@ -56,9 +56,9 @@ public static class Action
     public static void AttackMelee(Tile currentTile, Tile attemptTile)
     {
         Debug.Log("Attacking");
-        Actor target = attemptTile.occupied.GetComponent<Actor>();
+        ActorController target = attemptTile.occupied.GetComponent<ActorController>();
 
-        Effect.TakeDamage(target, 1);
+        Effect.TakeDamage(target.monsterController, 1);
     }
 
     public static void AssessAction(Transform thisLocation, Vector3 direction, Vector3 direction2)

@@ -21,8 +21,6 @@ public static class GameFlow
     {
         turn++;
         foreach(Actor actor in actors)
-        {
             actor.TakeTurn();
-        }
     }
 }

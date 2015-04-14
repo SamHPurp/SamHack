@@ -10,6 +10,9 @@ public static class SaveLoad
 
     public static void SaveGame()
     {
+        for (int i = 0; i < 30; i++)
+            Game.current.levels[i].SaveLevel(false);
+
         savedGames.Add(Game.current);
         BinaryFormatter bf = new BinaryFormatter();
         FileStream file = File.Create(Application.persistentDataPath + "/savedGames.sam");
@@ -27,10 +30,9 @@ public static class SaveLoad
             SaveLoad.savedGames = (List<Game>)bf.Deserialize(file);
             file.Close();
         }
+
         for (int i = 0; i < 30; i++)
-        {
             DungeonMaster.mapGenerator.levels.Add(savedGames[0].levels[i]);
-        }
 
         DungeonMaster.theManager.BuildPlayer();
         DungeonMaster.mapGenerator.DisplayMap(Game.currentLevel, true);
