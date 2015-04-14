@@ -22,7 +22,7 @@ public class Generation : MonoBehaviour
     public List<Level> levels = new List<Level>();
     List<Tile> possibleFeatureLoctions = new List<Tile>();
 
-    Tile possibleDoor; // across a few separate methods...
+    Tile possibleDoor; // across a few separate methods... need to handle better later
     Level buildingLevel;
 
     public Vector2[] directions = new Vector2[4]; // keep these out and declared in Awake.. it broke last time... :(
@@ -47,11 +47,6 @@ public class Generation : MonoBehaviour
 
         rnd = new System.Random();
         seed = rnd.Next();
-
-        for (int i = 0; i < directions.Length; i++)
-        {
-            Debug.Log(directions[i]);
-        }
     }
 	
 	void Start()
@@ -86,7 +81,7 @@ public class Generation : MonoBehaviour
                 tileScript[x, y].UpdateTileType(levels[loadLevel].tileContents[x, y]);
             }
         }
-        SpawnPlayer(down);
+        theManager.SpawnPlayer(down);
         //DungeonMaster.SpawnMonsters(levels[loadLevel]);
     }
 
@@ -105,22 +100,6 @@ public class Generation : MonoBehaviour
         }
 
         WipeMap();
-    }
-
-    public void SpawnPlayer(bool down) // Arguement denotes the stairs to come out at
-    {
-        if (down)
-        {
-            theManager.playerControl.myGO.transform.position = new Vector2(levels[Game.currentLevel].stairsUp.x, levels[Game.currentLevel].stairsUp.y);
-            Camera.main.transform.position = new Vector3(levels[Game.currentLevel].stairsUp.x, levels[Game.currentLevel].stairsUp.y, -10);
-            Movement.Move(theManager.playerControl.myGO.transform, Vector3.zero, Vector3.zero);
-        }
-        else
-        {
-            theManager.playerControl.myGO.transform.position = new Vector2(levels[Game.currentLevel].stairsDown.x, levels[Game.currentLevel].stairsDown.y);
-            Camera.main.transform.position = new Vector3(levels[Game.currentLevel].stairsDown.x, levels[Game.currentLevel].stairsDown.y, -10);
-            Movement.Move(theManager.playerControl.myGO.transform, Vector3.zero, Vector3.zero);
-        }
     }
 
     public void GenerateTheRooms(int numberOfRooms)

@@ -9,7 +9,7 @@ public class CameraControl : MonoBehaviour
     public void RegisterPlayer(GameObject player)
     {
         thePlayer = player;
-        //thePlayer.GetComponent<PlayerControl>().theMainCamera = this;
+        //thePlayer.GetComponent<Player>().theMainCamera = this;
     }
 	
     public void UpdateLocation(int x, int y)

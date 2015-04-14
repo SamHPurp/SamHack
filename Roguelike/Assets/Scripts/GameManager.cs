@@ -6,7 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public Canvas mainMenu;
     GameObject monsterPrefab;
-    Generation theGenerator;
+    Generation mapGenerator;
     GameObject thePlayer;
     GameObject theCamera;
     public Player playerControl;
@@ -20,15 +20,15 @@ public class GameManager : MonoBehaviour
             monsterPrefab = (GameObject)Resources.Load("Prefabs/Monster");
         }
 
-        theGenerator = FindObjectOfType<Generation>();
-        theGenerator.theManager = this;
+        mapGenerator = FindObjectOfType<Generation>();
+        mapGenerator.theManager = this;
     }
 
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Semicolon))
         {
-            theGenerator.BuildAllMaps();
+            mapGenerator.BuildAllMaps();
         }
     }
 
@@ -59,6 +59,22 @@ public class GameManager : MonoBehaviour
         theCamera.GetComponent<CameraControl>().RegisterPlayer(playerControl.myGO);
     }
 
+    public void SpawnPlayer(bool down) // Arguement denotes the stairs to come out at
+    {
+        if (down)
+        {
+            playerControl.myGO.transform.position = new Vector2(mapGenerator.levels[Game.currentLevel].stairsUp.x, mapGenerator.levels[Game.currentLevel].stairsUp.y);
+            Camera.main.transform.position = new Vector3(mapGenerator.levels[Game.currentLevel].stairsUp.x, mapGenerator.levels[Game.currentLevel].stairsUp.y, -10);
+            Movement.Move(playerControl.myGO.transform, Vector3.zero, Vector3.zero);
+        }
+        else
+        {
+            playerControl.myGO.transform.position = new Vector2(mapGenerator.levels[Game.currentLevel].stairsDown.x, mapGenerator.levels[Game.currentLevel].stairsDown.y);
+            Camera.main.transform.position = new Vector3(mapGenerator.levels[Game.currentLevel].stairsDown.x, mapGenerator.levels[Game.currentLevel].stairsDown.y, -10);
+            Movement.Move(playerControl.myGO.transform, Vector3.zero, Vector3.zero);
+        }
+    }
+
     public void GameOver()
     {
         Debug.Log("Game Over!");
@@ -66,7 +82,7 @@ public class GameManager : MonoBehaviour
 
     public void StartLevel()
     {
-        theGenerator.BuildAllMaps();
+        mapGenerator.BuildAllMaps();
         mainMenu.enabled = false;
     }
 
